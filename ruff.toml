@@ -1,0 +1,9 @@
+target-version = "py312"
+line-length = 110
+
+[lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[lint.per-file-ignores]
+# Tests import helpers first, because helpers puts scripts/ on sys.path.
+"scripts/tests/*" = ["E402", "I001", "E501"]
