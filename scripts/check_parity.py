@@ -15,7 +15,7 @@ EXEMPT = (
     "CONTRIBUTING.md",
     "SECURITY.md",
     "CHANGELOG.md",
-    "docs/hub-pin.md",
+    "docs/reference-pins.md",
     "docs/agent/*",
     "drafts/*",
     ".kiro/*",

@@ -2,7 +2,8 @@
 
 C (candidate): bare 'C', no numbers.  D (documented): official URL and a date.
 M (measured): a Markdown link to the record.  '-' means not applicable.
-Rows whose Hub tag differs from the pin are counted as stale (a warning, not a failure).
+Rows whose pinned-Playbook-commit cell (first 12 hex digits) differs from the pin are counted as stale
+(a warning, not a failure).
 """
 
 from __future__ import annotations
@@ -13,14 +14,15 @@ from _common import lines_outside_fences, pinned, read, text_files
 
 MATRIX_GLOB_PREFIX = "docs/compatibility-matrix"
 LEVEL_COLS = range(1, 7)  # list, get, put, multipart, delete, mount
-TAG_COL = 8
+PIN_COL = 8
+PIN_LEN = 12
 
 
 def cells(line: str) -> list[str]:
     return [c.strip() for c in line.strip().strip("|").split("|")]
 
 
-def scan_text(rel: str, text: str, tag: str) -> tuple[list[str], int, int]:
+def scan_text(rel: str, text: str, pin: str) -> tuple[list[str], int, int]:
     problems, stale, rows = [], 0, 0
     in_matrix = False
     for n, line in lines_outside_fences(text):
@@ -53,7 +55,7 @@ def scan_text(rel: str, text: str, tag: str) -> tuple[list[str], int, int]:
                     problems.append(f"{rel}:{n}: measured cell needs a link to its record")
             else:
                 problems.append(f"{rel}:{n}: cell must start with C, D, M or be '-' (got '{v}')")
-        if used and (len(c) <= TAG_COL or c[TAG_COL] != tag):
+        if used and (len(c) <= PIN_COL or c[PIN_COL] != pin):
             stale += 1
     return problems, stale, rows
 
@@ -61,11 +63,11 @@ def scan_text(rel: str, text: str, tag: str) -> tuple[list[str], int, int]:
 def main() -> int:
     from _common import ROOT
 
-    tag, _ = pinned(ROOT)
+    pin = pinned(ROOT).playbook_sha[:PIN_LEN]
     problems, stale, rows = [], 0, 0
     for rel in text_files(ROOT):
         if rel.startswith(MATRIX_GLOB_PREFIX) and rel.endswith(".md"):
-            p, s, r = scan_text(rel, read(ROOT, rel), tag)
+            p, s, r = scan_text(rel, read(ROOT, rel), pin)
             problems += p
             stale += s
             rows += r

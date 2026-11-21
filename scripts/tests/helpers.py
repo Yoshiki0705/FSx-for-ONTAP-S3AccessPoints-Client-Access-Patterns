@@ -12,14 +12,20 @@ if str(SCRIPTS) not in sys.path:
 
 TAG = "v1.2.3-test"
 SHA = "a" * 40  # allow:safety
-PIN = f"Pinned tag: `{TAG}`\nPinned commit: `{SHA}`\n"
-HUB = "https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns"
+PB_SHA = "b" * 40  # allow:safety
+PIN = (
+    f"Playbook pinned commit: `{PB_SHA}`\n"
+    f"Serverless-Patterns pinned tag: `{TAG}`\n"
+    f"Serverless-Patterns pinned commit: `{SHA}`\n"
+)
+SP = "https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns"
+PLAYBOOK = "https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook"
 
 
 def tree(files: dict[str, str], with_pin: bool = True) -> Path:
     root = Path(tempfile.mkdtemp())
     if with_pin:
-        files = {"docs/hub-pin.md": PIN, **files}
+        files = {"docs/reference-pins.md": PIN, **files}
     for rel, body in files.items():
         p = root / rel
         p.parent.mkdir(parents=True, exist_ok=True)

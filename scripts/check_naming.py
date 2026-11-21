@@ -1,4 +1,4 @@
-"""Gate: forbidden product names and abbreviations (Hub naming rule)."""
+"""Gate: forbidden product names and abbreviations (Playbook naming rule)."""
 
 from __future__ import annotations
 

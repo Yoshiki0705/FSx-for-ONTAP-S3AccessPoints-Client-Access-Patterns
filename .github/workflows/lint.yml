@@ -24,7 +24,7 @@ jobs:
         run: make install
       - name: Lint
         run: make lint
-      - name: Gates (Hub pin, naming, public safety, parity, matrix, make targets)
+      - name: Gates (pins, naming, public safety, parity, matrix, make targets)
         run: make drift
       - name: Gate tests
         run: make test

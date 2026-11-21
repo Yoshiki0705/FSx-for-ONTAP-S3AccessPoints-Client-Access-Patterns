@@ -1,6 +1,6 @@
 # Install: pip install pre-commit && pre-commit install
 # Run manually: pre-commit run --all-files
-# Revs match the Hub at its pinned tag (see docs/hub-pin.md).
+# Revs match Serverless-Patterns at its pinned tag (see docs/reference-pins.md).
 repos:
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.21.2

@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 import sys
 from pathlib import Path
+from typing import NamedTuple
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -34,7 +35,9 @@ TEXT_SUFFIXES = {
 TEXT_NAMES = {"Makefile", "LICENSE", ".gitignore", ".gitkeep", "CODEOWNERS"}
 BINARY_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif", ".pdf", ".ico", ".pyc"}
 
-HUB_REPO_URL = "github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns"
+PLAYBOOK_REPO_URL = "github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook"
+SERVERLESS_REPO_URL = "github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns"
+PINS_FILE = "docs/reference-pins.md"
 
 
 def _excluded(rel: str) -> bool:
@@ -83,14 +86,24 @@ def lines_outside_fences(text: str):
             yield n, line
 
 
-def pinned(root: Path = ROOT) -> tuple[str, str]:
-    """Return (tag, sha) from docs/hub-pin.md, or raise ValueError."""
-    text = read(root, "docs/hub-pin.md")
-    tag = re.search(r"^Pinned tag: `([^`\s]+)`", text, re.M)
-    sha = re.search(r"^Pinned commit: `([0-9a-f]{40})`", text, re.M)
-    if not tag or not sha:
-        raise ValueError("docs/hub-pin.md must contain 'Pinned tag: `<tag>`' and 'Pinned commit: `<40 hex>`'")
-    return tag.group(1), sha.group(1)
+class Pins(NamedTuple):
+    playbook_sha: str
+    serverless_tag: str
+    serverless_sha: str
+
+
+def pinned(root: Path = ROOT) -> Pins:
+    """Return the pins recorded in docs/reference-pins.md, or raise ValueError."""
+    text = read(root, PINS_FILE)
+    pb = re.search(r"^Playbook pinned commit: `([0-9a-f]{40})`", text, re.M)
+    tag = re.search(r"^Serverless-Patterns pinned tag: `([^`\s]+)`", text, re.M)
+    sha = re.search(r"^Serverless-Patterns pinned commit: `([0-9a-f]{40})`", text, re.M)
+    if not (pb and tag and sha):
+        raise ValueError(
+            f"{PINS_FILE} must contain 'Playbook pinned commit: `<40 hex>`', "
+            "'Serverless-Patterns pinned tag: `<tag>`' and 'Serverless-Patterns pinned commit: `<40 hex>`'"
+        )
+    return Pins(pb.group(1), tag.group(1), sha.group(1))
 
 
 def report(name: str, problems: list[str]) -> int:

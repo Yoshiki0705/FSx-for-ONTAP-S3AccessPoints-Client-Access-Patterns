@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import unittest
 
-from helpers import HUB, TAG, tree
+from helpers import PB_SHA, PLAYBOOK, SP, TAG, tree
 
-import check_hub_pin
-import check_hub_tag_exists
+import check_pins
+import check_pins_exist
 import check_make_targets
 import check_markdown
 import check_matrix
@@ -23,29 +23,54 @@ WF = "Workload" + " Factory"
 BX = "Blue" + "XP"
 
 
-class HubPin(unittest.TestCase):
+class Pins(unittest.TestCase):
     def test_good(self):
-        r = tree({"a.md": f"{HUB}/blob/{TAG}/docs/x.md\n"})
-        self.assertEqual(check_hub_pin.scan(r), [])
+        r = tree({"a.md": f"{SP}/blob/{TAG}/docs/x.md\n{PLAYBOOK}/blob/{PB_SHA}/docs/y.md\n"})
+        self.assertEqual(check_pins.scan(r), [])
 
-    def test_blob_main_fails(self):
-        r = tree({"a.md": f"{HUB}/blob/main/docs/x.md\n"})
-        self.assertTrue(check_hub_pin.scan(r))
+    def test_serverless_blob_main_fails(self):
+        r = tree({"a.md": f"{SP}/blob/main/docs/x.md\n"})
+        self.assertTrue(check_pins.scan(r))
 
-    def test_other_tag_fails(self):
-        r = tree({"a.md": f"{HUB}/blob/v9.9.9/docs/x.md\n"})
-        self.assertTrue(check_hub_pin.scan(r))
+    def test_serverless_other_tag_fails(self):
+        r = tree({"a.md": f"{SP}/blob/v9.9.9/docs/x.md\n"})
+        self.assertTrue(check_pins.scan(r))
+
+    def test_playbook_blob_main_fails(self):
+        r = tree({"a.md": f"{PLAYBOOK}/blob/main/README.md\n"})
+        self.assertTrue(check_pins.scan(r))
+
+    def test_playbook_other_sha_fails(self):
+        r = tree({"a.md": f"{PLAYBOOK}/blob/{'c' * 40}/README.md\n"})
+        self.assertTrue(check_pins.scan(r))
+
+    def test_playbook_short_sha_fails(self):
+        r = tree({"a.md": f"{PLAYBOOK}/blob/{PB_SHA[:12]}/README.md\n"})
+        self.assertTrue(check_pins.scan(r))
+
+    def test_tag_on_wrong_repo_fails(self):
+        r = tree({"a.md": f"{PLAYBOOK}/blob/{TAG}/README.md\n"})
+        self.assertTrue(check_pins.scan(r))
 
     def test_malformed_pin_fails(self):
-        r = tree({"docs/hub-pin.md": "Pinned tag: v1\n"}, with_pin=False)
-        self.assertTrue(check_hub_pin.scan(r))
+        r = tree({"docs/reference-pins.md": "Pinned tag: v1\n"}, with_pin=False)
+        self.assertTrue(check_pins.scan(r))
+
+    def test_missing_playbook_pin_fails(self):
+        body = f"Serverless-Patterns pinned tag: `{TAG}`\nServerless-Patterns pinned commit: `{'a' * 40}`\n"
+        r = tree({"docs/reference-pins.md": body}, with_pin=False)
+        self.assertTrue(check_pins.scan(r))
 
     def test_missing_pin_fails(self):
-        self.assertTrue(check_hub_pin.scan(tree({"a.md": "x\n"}, with_pin=False)))
+        self.assertTrue(check_pins.scan(tree({"a.md": "x\n"}, with_pin=False)))
 
     def test_link_in_yaml_is_scanned(self):
-        r = tree({".github/workflows/x.yml": f"# {HUB}/blob/main/a\n"})
-        self.assertTrue(check_hub_pin.scan(r))
+        r = tree({".github/workflows/x.yml": f"# {PLAYBOOK}/blob/main/a\n"})
+        self.assertTrue(check_pins.scan(r))
+
+    def test_issue_link_is_not_a_pinned_ref(self):
+        r = tree({"a.md": f"{PLAYBOOK}/issues/new?template=cross-repo-finding.yml\n"})
+        self.assertEqual(check_pins.scan(r), [])
 
 
 class Naming(unittest.TestCase):
@@ -141,7 +166,7 @@ class Parity(unittest.TestCase):
         self.assertEqual(check_parity.scan(tree({"AGENTS.md": "# A\n", "docs/agent/x.md": "# A\n"})), [])
 
 
-MATRIX_HEAD = "| Tool | List | Get | Put | Multipart | Delete | Mount | Date | Hub tag | Source |\n|---|---|---|---|---|---|---|---|---|---|\n"
+MATRIX_HEAD = "| Tool | List | Get | Put | Multipart | Delete | Mount | Date | Pinned Playbook commit | Source |\n|---|---|---|---|---|---|---|---|---|---|\n"
 
 
 def row(cells):
@@ -150,7 +175,7 @@ def row(cells):
 
 class Matrix(unittest.TestCase):
     def run_text(self, body):
-        return check_matrix.scan_text("m.md", MATRIX_HEAD + body, TAG)
+        return check_matrix.scan_text("m.md", MATRIX_HEAD + body, PB_SHA[:12])
 
     def test_all_candidate_ok(self):
         p, stale, rows = self.run_text(row(["C"] * 6))
@@ -219,13 +244,13 @@ class Markdown(unittest.TestCase):
         self.assertEqual(check_markdown.scan(tree({"a.en.md": "# T\n\n## Check the setting\n"})), [])
 
 
-class HubTagExists(unittest.TestCase):
+class PinsExist(unittest.TestCase):
     def test_peeled_wins(self):
         out = "1111\trefs/tags/t\n2222\trefs/tags/t^{}\n"
-        self.assertEqual(check_hub_tag_exists.resolve(out, "t"), "2222")
+        self.assertEqual(check_pins_exist.resolve(out, "t"), "2222")
 
     def test_missing_is_none(self):
-        self.assertIsNone(check_hub_tag_exists.resolve("1111\trefs/tags/other\n", "t"))
+        self.assertIsNone(check_pins_exist.resolve("1111\trefs/tags/other\n", "t"))
 
 
 if __name__ == "__main__":
