@@ -16,6 +16,8 @@ S3 Access Points の仕様、上限、選定に影響する FSx for ONTAP のコ
 | Spoke（このリポジトリ） | クライアントツールの設定手順、手動チェックリスト、ベンチマーク記録、互換性マトリクス |
 | 兄弟 Spoke（Serverless-Patterns） | 後続のサーバーレス処理の実装、ファイルシステムの運用パターン |
 
+3 つのリポジトリの関係は [docs/spoke-relations.md](docs/spoke-relations.md) に図で示しています。
+
 ## 参照の固定
 
 Playbook へのリンクはコミット SHA に、Serverless-Patterns へのリンクはリリースタグに固定しています。値は [docs/reference-pins.md](docs/reference-pins.md) だけに書き、`make drift` が全リンクと照合します。仕様や上限を知りたいときは、まず Playbook の [S3 Access Points の制約ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) を読んでください。

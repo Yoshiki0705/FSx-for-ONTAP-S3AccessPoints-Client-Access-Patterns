@@ -16,6 +16,8 @@ Specifications and limits for S3 Access Points, and the core FSx for ONTAP speci
 | Spoke (this repository) | Client-tool setup steps, manual checklists, benchmark records, the compatibility matrix |
 | Sibling Spoke (Serverless-Patterns) | Serverless processing implementations, operational patterns for the file system |
 
+The relationship among the three repositories is shown in [docs/spoke-relations.en.md](docs/spoke-relations.en.md).
+
 ## Pinned references
 
 Links to the Playbook are pinned to a commit SHA, and links to Serverless-Patterns are pinned to a release tag. The values are written only in [docs/reference-pins.md](docs/reference-pins.md), and `make drift` checks every link against them. For specifications and limits, start with the Playbook [note on S3 Access Points constraints](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) (Japanese).
