@@ -1,0 +1,14 @@
+# Local agent state and specs are not published.
+.kiro/specs/
+.kiro/skills/
+.private/
+
+# Python / tooling
+.venv/
+__pycache__/
+.ruff_cache/
+*.pyc
+
+# Local environment and secrets
+.env
+*.pem
