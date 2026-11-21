@@ -1,10 +1,11 @@
-# Hub フィードバック下書き / Hub feedback draft
+# Playbook フィードバック下書き / Playbook feedback draft
 
 > 提出は利用者の承認後です。顧客名、アカウント ID、リソース ID、実際のアクセスポイント別名を書きません。 / Submit only after the user approves. Do not write customer names, account IDs, resource IDs, or real access point aliases.
 
 - 種別 / Kind: Issue または PR / Issue or PR
-- 状態 / Status: 下書き / 提出済み / 反映済み（Hub のタグ） — draft / submitted / reflected (Hub tag)
-- 関係する Hub 文書と節 / Related Hub document and section: https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns/blob/v10.0.0-portal-line-icons-and-deps/<path>#<section>
+- 宛先 / Destination: Playbook（既定） または Serverless-Patterns（サーバーレス処理の実装に関する所見） / Playbook (default) or Serverless-Patterns (findings on the serverless implementation)
+- 状態 / Status: 下書き / 提出済み / 反映済み（Playbook のコミット） — draft / submitted / reflected (Playbook commit)
+- 関係する文書と節 / Related document and section: https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/<path>#<section>
 
 ## 観測した事実 / Observed facts
 
@@ -20,7 +21,7 @@
 
 同じ手順で動く別の操作。 / A different operation that works with the same steps.
 
-## 提案する Hub の変更 / Proposed Hub change
+## 提案する変更 / Proposed change
 
 ## 公開安全の確認 / Public safety check
 
