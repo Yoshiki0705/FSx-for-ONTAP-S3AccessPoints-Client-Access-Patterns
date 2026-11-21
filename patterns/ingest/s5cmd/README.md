@@ -10,7 +10,7 @@
 
 ## 前提
 
-S3 Access Points の前提と上限は [Hub の互換性ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns/blob/v10.0.0-portal-line-icons-and-deps/docs/s3ap-compatibility-notes.md) を参照してください。このページには書き写しません。
+S3 Access Points の前提と上限は [Playbook の S3 Access Points の制約ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) を参照してください。このページには書き写しません。
 
 ## 構成と流れ
 
@@ -26,7 +26,7 @@ S3 Access Points の前提と上限は [Hub の互換性ノート](https://githu
 
 ## 既知の制約
 
-未記入。S3 Access Points の制約は Hub へのリンク、ツール固有の制約は出典付きで書きます。
+未記入。S3 Access Points の制約は Playbook へのリンク、ツール固有の制約は出典付きで書きます。
 
 ## 選び方
 

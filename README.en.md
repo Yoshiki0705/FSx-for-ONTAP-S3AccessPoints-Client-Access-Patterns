@@ -8,16 +8,17 @@ This repository collects setup steps, confirmation results, and selection guidan
 
 ## Role of this repository
 
-Specifications, limits, and verification results for S3 Access Points live in the [Hub (FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns)](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns). This repository (the Spoke) does not copy them; it links to them. The Spoke holds client-tool setup steps, checklists, and measurement records.
+Specifications and limits for S3 Access Points, and the core FSx for ONTAP specifications that affect how it is chosen against other services, live in the entry-point repository [FSx-for-ONTAP-Adoption-Playbook](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook) (the Playbook). This repository is one Spoke under the Playbook. It does not copy those specifications; it links to them. The Spoke holds client-tool setup steps, checklists, and measurement records. The serverless processing that follows is held by a sibling Spoke, [FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns).
 
 | Where | What it holds |
 |---|---|
-| Hub | S3 Access Points specifications, limits, supported APIs, verification results, serverless processing patterns |
+| Playbook | S3 Access Points specifications and limits, the core FSx for ONTAP specifications that affect choosing it against other services, cross-repository conventions |
 | Spoke (this repository) | Client-tool setup steps, manual checklists, benchmark records, the compatibility matrix |
+| Sibling Spoke (Serverless-Patterns) | Serverless processing implementations, operational patterns for the file system |
 
-## Pinned Hub tag
+## Pinned references
 
-Every link to the Hub is pinned to one tag. The tag is written only in [docs/hub-pin.md](docs/hub-pin.md), and `make drift` checks every link against it. For specifications and limits, start with the [Hub compatibility notes](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns/blob/v10.0.0-portal-line-icons-and-deps/docs/s3ap-compatibility-notes.en.md).
+Links to the Playbook are pinned to a commit SHA, and links to Serverless-Patterns are pinned to a release tag. The values are written only in [docs/reference-pins.md](docs/reference-pins.md), and `make drift` checks every link against them. For specifications and limits, start with the Playbook [note on S3 Access Points constraints](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) (Japanese).
 
 ## Target tools
 

@@ -8,16 +8,17 @@ Amazon FSx for NetApp ONTAP（以下 FSx for ONTAP）の S3 Access Points を、
 
 ## このリポジトリの位置づけ
 
-S3 Access Points の仕様、上限、検証結果は [Hub（FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns）](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns) が持ちます。このリポジトリ（Spoke）はそれを複製せず、リンクで参照します。Spoke が持つのは、クライアントツール側の手順、チェックリスト、測定記録です。
+S3 Access Points の仕様、上限、選定に影響する FSx for ONTAP のコア仕様は、全体の入口である [FSx-for-ONTAP-Adoption-Playbook](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook)（以下 Playbook）が持ちます。このリポジトリは Playbook 配下の Spoke の 1 つで、仕様を複製せず、リンクで参照します。Spoke が持つのは、クライアントツール側の手順、チェックリスト、測定記録です。後続のサーバーレス処理の実装は、兄弟の Spoke である [FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns) が持ちます。
 
 | 置き場所 | 持つもの |
 |---|---|
-| Hub | S3 Access Points の仕様、上限、対応 API、検証結果、サーバレス処理パターン |
+| Playbook | S3 Access Points の仕様と上限、FSx for ONTAP のコア仕様のうち他サービスとの選定に影響するもの、横断の規約 |
 | Spoke（このリポジトリ） | クライアントツールの設定手順、手動チェックリスト、ベンチマーク記録、互換性マトリクス |
+| 兄弟 Spoke（Serverless-Patterns） | 後続のサーバーレス処理の実装、ファイルシステムの運用パターン |
 
-## Hub の固定タグ
+## 参照の固定
 
-Hub へのリンクは、すべて 1 つのタグに固定しています。タグは [docs/hub-pin.md](docs/hub-pin.md) だけに書き、`make drift` が全リンクと照合します。仕様や上限を知りたいときは、まず [Hub の互換性ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns/blob/v10.0.0-portal-line-icons-and-deps/docs/s3ap-compatibility-notes.md) を読んでください。
+Playbook へのリンクはコミット SHA に、Serverless-Patterns へのリンクはリリースタグに固定しています。値は [docs/reference-pins.md](docs/reference-pins.md) だけに書き、`make drift` が全リンクと照合します。仕様や上限を知りたいときは、まず Playbook の [S3 Access Points の制約ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) を読んでください。
 
 ## 対象ツール
 

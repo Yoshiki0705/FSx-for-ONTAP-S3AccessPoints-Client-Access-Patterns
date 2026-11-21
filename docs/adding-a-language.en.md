@@ -1,12 +1,12 @@
 # Adding a language
 
-The README and the main documents exist in Japanese and English. The Hub has 8 languages (ja, en, ko, zh-CN, zh-TW, fr, de, es), and naming follows it. The repository maintainer decides whether to add one.
+The README and the main documents exist in Japanese and English. The Playbook has 8 languages (ja, en, ko, zh-CN, zh-TW, fr, de, es), and naming follows it. The repository maintainer decides whether to add one.
 
 ## File naming
 
 - Japanese is `X.md` and English is `X.en.md`.
 - An added language is `X.<language code>.md` (for example `README.ko.md` and `README.zh-CN.md`).
-- Use the same spelling of the language code as the Hub README.
+- Use the same spelling of the language code as the Playbook language directories (`docs/<language code>/`).
 
 ## Steps to add a language
 

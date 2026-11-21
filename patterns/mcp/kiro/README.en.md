@@ -10,7 +10,7 @@ This covers calling an MCP server from Kiro to use data reached through S3 Acces
 
 ## Prerequisites
 
-For the prerequisites and limits of S3 Access Points, see the [Hub compatibility notes](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns/blob/v10.0.0-portal-line-icons-and-deps/docs/s3ap-compatibility-notes.en.md).
+For the prerequisites and limits of S3 Access Points, see the [Playbook note on S3 Access Points constraints](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) (Japanese).
 ## Architecture and flow
 
 Not written yet.

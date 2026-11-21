@@ -10,8 +10,8 @@ This covers calling an MCP server from Claude Desktop to use data reached throug
 
 ## Prerequisites
 
-For the prerequisites and limits of S3 Access Points, see the [Hub compatibility notes](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns/blob/v10.0.0-portal-line-icons-and-deps/docs/s3ap-compatibility-notes.en.md).
-Related: the Hub has a demo for a different MCP client (Amazon Quick Desktop). Its architecture differs, so do not read it as Claude Desktop steps; see the [Hub demo guide](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns/blob/v10.0.0-portal-line-icons-and-deps/docs/en/demo-agentcore-mcp-quick-desktop.md) for reference only.
+For the prerequisites and limits of S3 Access Points, see the [Playbook note on S3 Access Points constraints](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) (Japanese).
+Related: the sibling Spoke Serverless-Patterns has a demo for a different MCP client (Amazon Quick Desktop). Its architecture differs, so do not read it as Claude Desktop steps; see the [Serverless-Patterns demo guide](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns/blob/v10.0.0-portal-line-icons-and-deps/docs/en/demo-agentcore-mcp-quick-desktop.md) for reference only.
 
 ## Architecture and flow
 

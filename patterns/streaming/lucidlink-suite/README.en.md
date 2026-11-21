@@ -10,7 +10,7 @@ Not written yet.
 
 ## Prerequisites
 
-For the prerequisites and limits of S3 Access Points, see the [Hub compatibility notes](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns/blob/v10.0.0-portal-line-icons-and-deps/docs/s3ap-compatibility-notes.en.md). They are not copied into this page.
+For the prerequisites and limits of S3 Access Points, see the [Playbook note on S3 Access Points constraints](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) (Japanese). They are not copied into this page.
 
 ## Architecture and flow
 
@@ -26,7 +26,7 @@ Not written yet. Include at least one control operation that is expected to succ
 
 ## Known constraints
 
-Not written yet. Link to the Hub for S3 Access Points constraints; write tool-specific constraints with a source.
+Not written yet. Link to the Playbook for S3 Access Points constraints; write tool-specific constraints with a source.
 
 ## How to choose
 

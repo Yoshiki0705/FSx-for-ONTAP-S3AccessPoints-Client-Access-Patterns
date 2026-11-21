@@ -8,7 +8,7 @@
 
 1. 該当の鍵や認証情報を、先に無効化または削除する。
 2. 履歴の書き換えが必要かを判断する。公開リポジトリの履歴は複製されうるため、無効化を優先する。
-3. Hub の方針に合わせて、再発防止のゲートを足す。
+3. Playbook の方針に合わせて、再発防止のゲートを足す。
 
 ## English
 
@@ -18,4 +18,4 @@ When a secret has entered published history:
 
 1. Revoke or delete the key or credential first.
 2. Decide whether history must be rewritten. Published history can be copied, so revocation comes first.
-3. Add a gate that prevents recurrence, consistent with the Hub's practice.
+3. Add a gate that prevents recurrence, consistent with the Playbook's practice.

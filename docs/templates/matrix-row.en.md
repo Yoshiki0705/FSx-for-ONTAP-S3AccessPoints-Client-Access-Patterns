@@ -7,7 +7,7 @@ A matrix row describes the confirmation status of one version of one tool. Level
 ## Example row
 
 ```text
-| <tool> (<version>) | C | D <official URL> <YYYY-MM-DD> | M [record](<path to record>) | C | C | - | <YYYY-MM-DD> | <pinned Hub tag> | <source> |
+| <tool> (<version>) | C | D <official URL> <YYYY-MM-DD> | M [record](<path to record>) | C | C | - | <YYYY-MM-DD> | <pinned Playbook commit> | <source> |
 ```
 
 ## Required fields
@@ -16,4 +16,4 @@ A matrix row describes the confirmation status of one version of one tool. Level
 |---|---|
 | Level mark | One of `C`, `D`, `M`, `-` |
 | Date | Required for a row that contains `D` or `M` |
-| Pinned Hub tag | The value at the time of confirmation. A row that differs from the current pin counts as `stale` |
+| Pinned Playbook commit | The value at the time of confirmation (first 12 hex digits of the SHA). A row that differs from the current pin counts as `stale` |

@@ -10,8 +10,8 @@ Claude Desktop から MCP サーバを呼び出し、S3 Access Points 経由の�
 
 ## 前提
 
-S3 Access Points の前提と上限は [Hub の互換性ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns/blob/v10.0.0-portal-line-icons-and-deps/docs/s3ap-compatibility-notes.md) を参照してください。
-関連: Hub には、別の MCP クライアント（Amazon Quick Desktop）を使うデモの手順があります。構成は異なるため、Claude Desktop の手順としては読まず、参考として [Hub のデモガイド](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns/blob/v10.0.0-portal-line-icons-and-deps/docs/demo-agentcore-mcp-quick-desktop.md) を参照してください。
+S3 Access Points の前提と上限は [Playbook の S3 Access Points の制約ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) を参照してください。
+関連: 兄弟 Spoke の Serverless-Patterns には、別の MCP クライアント（Amazon Quick Desktop）を使うデモの手順があります。構成は異なるため、Claude Desktop の手順としては読まず、参考として [Serverless-Patterns のデモガイド](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns/blob/v10.0.0-portal-line-icons-and-deps/docs/demo-agentcore-mcp-quick-desktop.md) を参照してください。
 
 ## 構成と流れ
 

@@ -11,7 +11,7 @@
 | Tool name | LucidLink Connect |
 | Version | (fill in) |
 | Date (JST) | (fill in) |
-| Pinned Hub tag | (fill in) |
+| Pinned Playbook commit | (fill in) |
 
 ## Check items
 
