@@ -21,17 +21,17 @@
    - `docs/ja/reference/cross-repo-index.md`: `## 分担の原則` の表で、`FSx-for-ONTAP-Container-Datastore-Patterns` の行の直後に、分担の原則の行を足します。
    - 任意: `llms.txt` の「Sibling repositories」節に、[index-check.md](index-check.md) の文案を足します。足したら [PR-BODY.md](PR-BODY.md) の Changes の任意の行も確定させます。
 
-3. worktree 内でゲートを走らせます。先に Playbook の `make help` と `AGENTS.md` で、現役のターゲットと前提ツールを確認します。
+3. worktree 内でゲートを走らせます。先に Playbook の Makefile の `help` ターゲットと `AGENTS.md` で、現役のターゲットと前提ツールを確認します。
 
    ```bash
-   make audit
-   make links
-   make cross-repo
-   make headings
-   make i18n-check
-   make switcher-check
-   make ja-markers
-   make anchors
+   make -C ../playbook-related-repos audit
+   make -C ../playbook-related-repos links
+   make -C ../playbook-related-repos cross-repo
+   make -C ../playbook-related-repos headings
+   make -C ../playbook-related-repos i18n-check
+   make -C ../playbook-related-repos switcher-check
+   make -C ../playbook-related-repos ja-markers
+   make -C ../playbook-related-repos anchors
    ```
 
    Playbook の pre-commit が、worktree にない前提（gitignore 対象の台帳など）で落ちるときは、`--no-verify` や回避の環境変数を使わず、ここで止まって stage までにして報告します。
@@ -52,8 +52,8 @@
 
 ## 未解決の点
 
-- 6 言語（ko、zh-CN、zh-TW、fr、de、es）の README。Playbook のルート README は 8 言語で検査される規約で、この下書きは日本語と英語だけを持ちます。`make i18n-check` が行の欠けを失敗にするかは未確認です。失敗する場合は、Playbook の持ち主が翻訳を足すか、日本語と英語を先に入れる方法（`docs/i18n-manifest.txt` の言語指定）の対象かを決めます。
-- `make cross-repo-external` は、Spoke が公開されるまで通りません。
+- 6 言語（ko、zh-CN、zh-TW、fr、de、es）の README。Playbook のルート README は 8 言語で検査される規約で、この下書きは日本語と英語だけを持ちます。`i18n-check` が行の欠けを失敗にするかは未確認です。失敗する場合は、Playbook の持ち主が翻訳を足すか、日本語と英語を先に入れる方法（`docs/i18n-manifest.txt` の言語指定）の対象かを決めます。
+- `cross-repo-external` は、Spoke が公開されるまで通りません。
 
 ## 戻し方
 

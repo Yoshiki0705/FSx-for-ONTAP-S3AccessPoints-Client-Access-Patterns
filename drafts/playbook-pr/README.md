@@ -2,7 +2,7 @@
 
 Adoption-Playbook（以下 Playbook）に、この Spoke を載せる PR の下書きです。**Playbook には何も適用していません。**
 
-**この PR は、Spoke の GitHub リポジトリ（`https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns`）が作られて公開されるまで開かないでください。** Playbook の `make cross-repo-external` は、本文に現れる兄弟リポジトリの名前を GitHub の API で引くため、作る前は失敗します。
+**この PR は、Spoke の GitHub リポジトリ（`https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns`）が作られて公開されるまで開かないでください。** Playbook の `cross-repo-external` は、本文に現れる兄弟リポジトリの名前を GitHub の API で引くため、作る前は失敗します。
 
 | ファイル | 内容 |
 |---|---|

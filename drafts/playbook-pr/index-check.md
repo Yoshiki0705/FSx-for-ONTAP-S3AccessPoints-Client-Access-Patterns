@@ -29,18 +29,18 @@
 
 | ゲート | 追記への要求（読めた範囲） |
 |---|---|
-| `make cross-repo` | 本文の `blob/` リンクが引用表に載っていること。この下書きの行は `blob/` を使わないので対象外 |
-| `make cross-repo-external` | 本文に現れる兄弟リポジトリの名前を GitHub の API で引く。Spoke が作られるまで失敗する見込み |
-| `make audit` | 命名、中立性、PII、内部 ID。下書きは「FSx for ONTAP」「S3 Access Points」の表記で、優劣の語を使わない |
-| `make i18n-check` | ルート README と各言語 README の整合。**6 言語に行がないと失敗するかは未確認** |
-| `make switcher-check`、`make ja-markers` | 言語切替と、英語から日本語のみの文書へのリンクの注記。下書きは日本語のみの文書へリンクしない |
-| `make headings` | 日本語の節見出しが名詞句であること。下書きは見出しを足さない |
-| `make links` | 内部リンクの解決。下書きの相対リンク（`../domains/client-access/notes/...`）は、`cross-repo-index.md` から `origin/main` に実在することを確認済み |
-| `make anchors` | 外部から引用された節見出しの改名を検知する。下書きは Playbook の見出しを変えない |
+| `cross-repo` | 本文の `blob/` リンクが引用表に載っていること。この下書きの行は `blob/` を使わないので対象外 |
+| `cross-repo-external` | 本文に現れる兄弟リポジトリの名前を GitHub の API で引く。Spoke が作られるまで失敗する見込み |
+| `audit` | 命名、中立性、PII、内部 ID。下書きは「FSx for ONTAP」「S3 Access Points」の表記で、優劣の語を使わない |
+| `i18n-check` | ルート README と各言語 README の整合。**6 言語に行がないと失敗するかは未確認** |
+| `switcher-check`、`ja-markers` | 言語切替と、英語から日本語のみの文書へのリンクの注記。下書きは日本語のみの文書へリンクしない |
+| `headings` | 日本語の節見出しが名詞句であること。下書きは見出しを足さない |
+| `links` | 内部リンクの解決。下書きの相対リンク（`../domains/client-access/notes/...`）は、`cross-repo-index.md` から `origin/main` に実在することを確認済み |
+| `anchors` | 外部から引用された節見出しの改名を検知する。下書きは Playbook の見出しを変えない |
 | `pr-title-check` | タイトルが conventional prefix で始まること |
 
 ## 未確認
 
 - 上のゲートを Playbook で実行した結果はありません（Playbook の作業ツリーに触れない条件）。適用時に [APPLY.md](APPLY.md) の手順で走らせてください。
-- `make i18n-check` がルート README の「関連リポジトリ」表の行数まで比べるかは、スクリプトの全文を読んでいません。
+- `i18n-check` がルート README の「関連リポジトリ」表の行数まで比べるかは、スクリプトの全文を読んでいません。
 - `tools/ai_style_rules.py` など文体の検査が、表のセルにどこまで及ぶかは確認していません。

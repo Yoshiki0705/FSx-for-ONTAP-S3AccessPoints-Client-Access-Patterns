@@ -45,7 +45,13 @@ def commit_exists(repo_url: str, sha: str) -> bool:
 def main() -> int:
     pins = pinned(ROOT)
     out = subprocess.run(
-        ["git", "ls-remote", "--tags", f"https://{SERVERLESS_REPO_URL}.git", f"refs/tags/{pins.serverless_tag}*"],
+        [
+            "git",
+            "ls-remote",
+            "--tags",
+            f"https://{SERVERLESS_REPO_URL}.git",
+            f"refs/tags/{pins.serverless_tag}*",
+        ],
         capture_output=True,
         text=True,
         check=False,
@@ -58,7 +64,10 @@ def main() -> int:
         print(f"check_pins_exist: tag {pins.serverless_tag} not found on the Serverless-Patterns remote")
         return 1
     if remote != pins.serverless_sha:
-        print(f"check_pins_exist: tag {pins.serverless_tag} now points at {remote}, recorded {pins.serverless_sha}")
+        print(
+            f"check_pins_exist: tag {pins.serverless_tag} now points at {remote}, "
+            f"recorded {pins.serverless_sha}"
+        )
         return 1
     try:
         found = commit_exists(PLAYBOOK_REPO_URL, pins.playbook_sha)
@@ -68,7 +77,10 @@ def main() -> int:
     if not found:
         print(f"check_pins_exist: Playbook commit {pins.playbook_sha} not found")
         return 1
-    print(f"check_pins_exist: ok (Serverless-Patterns {pins.serverless_tag} -> {pins.serverless_sha}; Playbook {pins.playbook_sha})")
+    print(
+        f"check_pins_exist: ok (Serverless-Patterns {pins.serverless_tag} -> {pins.serverless_sha}; "
+        f"Playbook {pins.playbook_sha})"
+    )
     return 0
 
 

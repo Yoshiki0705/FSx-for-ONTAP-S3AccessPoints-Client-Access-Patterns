@@ -12,7 +12,7 @@
 
 Adds the FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns repository to the related-repositories tables (ja and en) and to the division-of-labour table in the citation index. The repository is a Spoke under the Playbook and a sibling of FSx-for-ONTAP-S3AccessPoints-Serverless-Patterns. It holds client-tool setup steps, manual checklists, a compatibility matrix and measurement records for FSx for ONTAP S3 Access Points. It currently has no measurements.
 
-**Do not merge or open before the Spoke repository exists and is public.** The README rows link to its URL, and `make cross-repo-external` looks the name up through the GitHub API.
+**Do not merge or open before the Spoke repository exists and is public.** The README rows link to its URL, and `cross-repo-external` looks the name up through the GitHub API.
 
 ## Changes
 
@@ -25,8 +25,8 @@ The other six README languages (ko, zh-CN, zh-TW, fr, de, es) are not changed in
 
 ## Testing
 
-- [ ] `make audit`, `make links`, `make cross-repo`, `make headings`, `make i18n-check`, `make switcher-check`, `make ja-markers` and `make anchors` pass in the PR worktree
-- [ ] `make cross-repo-external` passes after the Spoke repository is public
+- [ ] `audit`, `links`, `cross-repo`, `headings`, `i18n-check`, `switcher-check`, `ja-markers` and `anchors` pass in the PR worktree
+- [ ] `cross-repo-external` passes after the Spoke repository is public
 - [ ] gitleaks clean
 - [ ] Unit tests / cfn-lint: not applicable (documentation only)
 
