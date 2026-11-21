@@ -2,7 +2,7 @@
 
 🌐 **言語**: **日本語** | [English](README.en.md)
 
-> **確認水準**: `candidate`（未確認）。設定ファイルの場所と書式だけを公式ドキュメントで確認しています。FSx for ONTAP の S3 Access Points に届く MCP サーバを動かした確認は、まだありません。
+> **確認水準**: `candidate`（未確認）。設定ファイルの場所と書式だけを公式ドキュメントで確認しています。FSx for ONTAP の S3 Access Points に接続する MCP サーバを動かした確認は、まだありません。
 
 ## 概要と対象の利用場面
 
@@ -60,4 +60,4 @@ S3 Access Points の前提と上限は [Hub の互換性ノート](https://githu
 | 項目 | 水準 | 出典 |
 |---|---|---|
 | 設定ファイルの場所と書式 | `D` | https://kiro.dev/docs/mcp/configuration/（2026-11-21） |
-| S3 Access Points に届く MCP サーバでの動作 | `C` | - |
+| S3 Access Points に接続する MCP サーバでの動作 | `C` | - |
