@@ -12,8 +12,7 @@ ROOT = Path(__file__).resolve().parent.parent
 # this walk with `git ls-files` so the two cannot drift apart silently.
 EXCLUDE_DIRS = (
     ".git",
-    ".kiro/specs",
-    ".kiro/skills",
+    ".kiro",
     ".private",
     ".venv",
     "__pycache__",
