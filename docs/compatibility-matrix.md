@@ -31,6 +31,26 @@
 | LucidLink Connect（版は未確認） | C | C | C | C | C | C | - | - | - |
 | LucidLink Suite（版は未確認） | C | C | C | C | C | C | - | - | - |
 
+## ツールが使う S3 操作と対応表の照合
+
+左の列は AWS の対応表（[Access point compatibility](https://docs.aws.amazon.com/fsx/latest/ONTAPGuide/access-points-for-fsxn-object-api-support.html)、2026-11-24 に閲覧）の記載です。ツールの列は、そのツールがその操作を発行するかどうかで、全セル `C`（未実測）です。文書から読み取れた範囲は [ツールの事実確認](tool-facts.md) にあります。
+
+| S3 操作 | AWS の対応表 | AWS CLI | s5cmd | rclone | Mountpoint for Amazon S3 |
+|---|---|---|---|---|---|
+| ListObjectsV2 | 対応 | C | C | C | C |
+| GetObject と HeadObject | 対応 | C | C | C | C |
+| PutObject | 対応 | C | C | C | C |
+| マルチパート（CreateMultipartUpload、UploadPart、CompleteMultipartUpload、AbortMultipartUpload） | 対応 | C | C | C | C |
+| CopyObject（同一リージョン） | 対応 | C | C | C | C |
+| UploadPartCopy（同一リージョン） | 対応 | C | C | C | C |
+| DeleteObject と DeleteObjects | 対応 | C | C | C | C |
+| GetObjectTagging と PutObjectTagging | 対応 | C | C | C | C |
+| HeadBucket と GetBucketLocation | 対応 | C | C | C | C |
+| 条件付き書き込み（`If-None-Match`、`If-Match`） | 未対応 | C | C | C | C |
+| ListObjectVersions | 未対応 | C | C | C | C |
+
+> **照合の読み方**: 「AWS の対応表」が未対応の操作をツールが発行すると、その操作は失敗するはずです。たとえば `aws s3 cp --no-overwrite` がどの方式で上書きを防ぐかは文書に書かれておらず、条件付き書き込みを使うなら失敗しえます。段階 3 で、対応表が未対応とする行を発行するかをツールごとに確かめます。
+
 ## 更新の手順
 
 1. 確認した操作のセルを `C` から `D` または `M` に変え、確認日と固定した Playbook コミット（SHA の先頭 12 桁）を同じ行に書く。

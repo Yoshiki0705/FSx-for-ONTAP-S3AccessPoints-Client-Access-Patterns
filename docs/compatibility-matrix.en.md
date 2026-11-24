@@ -31,6 +31,26 @@ Confirmation status of the operations client tools perform against FSx for ONTAP
 | LucidLink Connect（version unconfirmed） | C | C | C | C | C | C | - | - | - |
 | LucidLink Suite（version unconfirmed） | C | C | C | C | C | C | - | - | - |
 
+## S3 operations used by the tools and the compatibility list
+
+The second column is what the AWS compatibility list ([Access point compatibility](https://docs.aws.amazon.com/fsx/latest/ONTAPGuide/access-points-for-fsxn-object-api-support.html), read on 2026-11-24) says. The tool columns record whether that tool issues the operation, and every cell is `C` (not measured). What could be read from the documents is in the [tool fact check](tool-facts.en.md).
+
+| S3 operation | AWS compatibility list | AWS CLI | s5cmd | rclone | Mountpoint for Amazon S3 |
+|---|---|---|---|---|---|
+| ListObjectsV2 | Supported | C | C | C | C |
+| GetObject and HeadObject | Supported | C | C | C | C |
+| PutObject | Supported | C | C | C | C |
+| Multipart (CreateMultipartUpload, UploadPart, CompleteMultipartUpload, AbortMultipartUpload) | Supported | C | C | C | C |
+| CopyObject (same Region) | Supported | C | C | C | C |
+| UploadPartCopy (same Region) | Supported | C | C | C | C |
+| DeleteObject and DeleteObjects | Supported | C | C | C | C |
+| GetObjectTagging and PutObjectTagging | Supported | C | C | C | C |
+| HeadBucket and GetBucketLocation | Supported | C | C | C | C |
+| Conditional writes (`If-None-Match`, `If-Match`) | Not supported | C | C | C | C |
+| ListObjectVersions | Not supported | C | C | C | C |
+
+> **How to read the cross-check**: If a tool issues an operation that the AWS list marks as not supported, that operation should fail. For example, the documents do not say how `aws s3 cp --no-overwrite` prevents an overwrite, and it can fail if it uses a conditional write. Stage 3 checks, tool by tool, whether the rows that the AWS list marks as not supported are issued.
+
 ## Update procedure
 
 1. Change the confirmed cell from `C` to `D` or `M`, and write the date and the pinned Playbook commit (first 12 hex digits of the SHA) in the same row.

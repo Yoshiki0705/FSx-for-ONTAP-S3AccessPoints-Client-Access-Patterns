@@ -2,47 +2,58 @@
 
 🌐 **Language**: [日本語](README.md) | **English**
 
-> **Confirmation level**: `candidate` (unconfirmed). Steps and constraints are not written until they are confirmed by official documentation or your own measurement.
+> **Confirmation level**: The syntax of the setup steps is confirmed from the official documents (`D`, 2026-11-24). Behavior against an FSx for ONTAP access point has not been measured (`C`).
 
 ## Overview and target use cases
 
-Not written yet.
+Use `aws s3` and `aws s3api` to read, write, and copy through an access point. The targets are bulk transfers in scripts and scheduled jobs, and server-side copy between a bucket and an access point ([server-side copy](../../../docs/server-side-copy.en.md)).
 
 ## Prerequisites
 
-For the prerequisites and limits of S3 Access Points, see the [Playbook note on S3 Access Points constraints](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) (Japanese). They are not copied into this page.
+For the prerequisites and limits of S3 Access Points, see the [Playbook note on S3 Access Points constraints](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) (Japanese). They are not copied into this page. The tool version and the sources are in the [tool fact check](../../../docs/tool-facts.en.md).
 
 ## Architecture and flow
 
-Not written yet.
+S3 decides with the client's IAM credentials, then the permissions of the file system user set on the access point decide ([FSx for ONTAP User Guide](https://docs.aws.amazon.com/fsx/latest/ONTAPGuide/s3-ap-manage-access-fsxn.html), read on 2026-11-24).
 
 ## Setup steps
 
-Not written yet. Write only steps confirmed in official documentation, with the source URL and the date.
+Specify the access point by ARN or alias. The AWS CLI reference has examples of the ARN syntax ([aws s3 cp](https://docs.aws.amazon.com/cli/latest/reference/s3/cp.html), read on 2026-11-24).
+
+```bash
+aws s3 cp mydoc.txt s3://arn:aws:s3:us-west-2:123456789012:accesspoint/myaccesspoint/mykey
+aws s3 cp s3://arn:aws:s3:us-west-2:123456789012:accesspoint/myaccesspoint/mykey mydoc.txt
+```
+
+The documents say an alias can be used in place of a bucket name (`<name>-<metadata>-ext-s3alias`; [Referencing access points](https://docs.aws.amazon.com/fsx/latest/ONTAPGuide/referencing-access-points-for-fsxn.html), read on 2026-11-24).
 
 ## Verification steps
 
-Not written yet. Include at least one control operation that is expected to succeed.
+Run them in the AWS CLI section of the [stage 3 runbook](../../../benchmarks/stage3-runbook.en.md). As a control that should succeed, first run `aws s3api list-objects-v2` against the same alias.
 
 ## Known constraints
 
-Not written yet. Link to the Playbook for S3 Access Points constraints; write tool-specific constraints with a source.
+- The constraints on the access point side (conditional writes, versioning, the upload size limit and so on) are in the Playbook.
+- In a multipart S3-to-S3 copy, the default `--copy-props` may make extra `HeadObject`, `GetObjectTagging` and `PutObjectTagging` calls. `--copy-props none` avoids them.
+- The documents do not say whether `aws s3 cp --no-overwrite` uses a conditional write to prevent an overwrite (`C`).
 
 ## How to choose
 
 | Item | Content |
 |---|---|
-| Suited to | Unconfirmed |
-| Constraints | Unconfirmed |
+| Suited to | Scripts and batch jobs. Checking server-side copy (`--debug` shows the API that was issued) |
+| Constraints | Behavior on a real file system is not measured. The mechanism of `--no-overwrite` is unconfirmed |
 | Other options | [How to choose](../../../docs/how-to-choose.en.md) |
 
 ## Cleanup and rollback
 
-Not written yet.
+Nothing remains on the client. The S3 Access Points and the bucket created in stage 3 are removed by the cleanup script in the runbook.
 
 ## Confirmation level and sources
 
 | Item | Level | Source |
 |---|---|---|
+| Current version (2.42.2) | `D` | [AWS CLI tags](https://github.com/aws/aws-cli/tags), 2026-11-24 |
+| Specifying an ARN and an alias | `D` | The two AWS documents above, 2026-11-24 |
 | Setup steps | `C` | - |
 | Verification steps | `C` | - |
