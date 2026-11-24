@@ -1,6 +1,6 @@
 # Playbook フィードバック下書き / Playbook feedback draft
 
-> 提出は利用者の承認後です。顧客名、アカウント ID、リソース ID、実際のアクセスポイント別名を書きません。 / Submit only after the user approves. Do not write customer names, account IDs, resource IDs, or real access point aliases.
+> 提出は利用者の承認後です。組織名、アカウント ID、リソース ID、実際のアクセスポイント別名を書きません。 / Submit only after the user approves. Do not write organization names, account IDs, resource IDs, or real access point aliases.
 
 - 種別 / Kind: Issue
 - 宛先 / Destination: Playbook
@@ -32,5 +32,5 @@ Spoke の段階 3 の手順書と `stage3-measure.sh --case aws-cli`、`--case s
 
 ## 公開安全の確認 / Public safety check
 
-- [x] 顧客名、個人名、アカウント ID、リソース ID、別名、ケース番号を含まない / No customer or personal names, account IDs, resource IDs, aliases, or case numbers
+- [x] 組織名、個人名、アカウント ID、リソース ID、別名、ケース番号を含まない / No organization or personal names, account IDs, resource IDs, aliases, or case numbers
 - [x] `make drift` が通る / `make drift` passes
