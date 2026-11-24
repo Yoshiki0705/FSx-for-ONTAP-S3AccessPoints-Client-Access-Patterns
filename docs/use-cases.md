@@ -29,7 +29,7 @@ Amazon FSx for NetApp ONTAP（以下 FSx for ONTAP）のボリュームに S3 Ac
 | 3 | 機械学習の学習データの置き場 | 準備したデータを ONTAP の NAS バケットに置き、学習の宛先として ONTAP S3 を選ぶパイプラインの例。FSx for ONTAP での確認はない | 公式の想定 | U4 |
 | 4 | NFS と S3 の二重アクセス（Cloud Volumes ONTAP） | データサイエンティストは NFS で、ほかの利用者やアプリは S3 で、同じデータを使う | 公式の想定 | U3 |
 
-オンプレミスの ONTAP の FabricPool は、非アクティブなデータをバケットへ移す別の機能です。S3 NAS バケットは FabricPool の階層化先にできません（U1、U2）。
+オンプレミスの ONTAP の FabricPool は、非アクティブなデータをバケットへ移す別の機能です。S3 NAS バケットは FabricPool の階層化先にできません（U2）。U1 は、FabricPool が ONTAP の通常の S3 バケットへ階層化できることを挙げています。
 
 S3 NAS バケットは、通常のバケットの動作と違う点があります。NetApp の文書は、バージョニング、ライフサイクル、Object Lock の取得操作などを未対応とし、マルチパートアップロードは ONTAP 9.16.1 以降の条件付きで対応するとしています（U2）。FSx for ONTAP の S3 Access Points の対応範囲は別に決まっていて、Playbook の[制約ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md)にあります。両者を同じ機能として扱わないでください。
 
@@ -42,7 +42,7 @@ S3 NAS バケットは、通常のバケットの動作と違う点がありま�
 | N1 | ファイル共有のデータへの SQL 分析 | NFS や SMB に置かれたファイルを、Amazon Athena と AWS Glue Data Catalog で問い合わせる | 公式の想定 | なし | AWS CLI（データ投入と確認） | U6 |
 | N2 | 文書共有を元にした RAG | Amazon Bedrock Knowledge Bases が、共有に置かれた文書を読み込む | 公式の想定 | なし | AWS CLI（文書の投入と確認） | U6、U5 |
 | N3 | EDA のログの AI 分析 | NFS に書かれたシミュレーションのログを、Amazon Quick と Amazon Bedrock AgentCore から読む構成例 | 公式の想定（U7 の構成例） | なし | なし（サービスが直接読む） | U7 |
-| N4 | 外部との SFTP 受け渡し | AWS Transfer Family の SFTP、FTPS、FTP の入口を、Access Point の先のボリュームにつなぐ | 公式の想定 | なし | なし（Transfer Family が API を呼ぶ） | U6、U9 |
+| N4 | 外部との SFTP 受け渡し | AWS Transfer Family の SFTP、FTPS、FTP の入口を、Access Point の先のボリュームにつなぐ。前提は U9 に書かれている。ONTAP 9.17.1 以降、ファイルシステムと Access Point が同一リージョン・同一アカウント、指定はエイリアスのみ（ARN は不可）、リネームと追記は未対応（WinSCP の一時ファイル名のアップロードは失敗する）。Transfer Family は VPC の外から要求するため、ネットワーク起点が VPC の Access Point は拒否される。本検証の構成（起点が VPC）は、そのままは使えない | 公式の想定 | なし | なし（Transfer Family が API を呼ぶ） | U6、U9 |
 | N5 | バケットのデータをボリュームへ初期投入 | パートナーのバケットのデータを、マウントせずにボリュームへ写す | 公式の想定 | バケット→ボリュームのコピー（AWS CLI、s5cmd、rclone） | AWS CLI、s5cmd、rclone | U8 |
 | N6 | 動画のストリーミング配信 | ボリュームの HLS 動画を Amazon CloudFront で配信する | 公式の想定 | なし | なし | U6 |
 | N7 | ファイル投入のサーバーレス処理 | AWS Lambda でサムネイルの生成、文書からのテキスト抽出、音声の書き起こしをする | 公式の想定 | なし | AWS CLI（動作確認） | U6 |
@@ -57,13 +57,14 @@ S3 NAS バケットは、通常のバケットの動作と違う点がありま�
 | # | 用途 | 内容 | 根拠の区分 | 関連する操作の実測（用途の実測ではない） | 関わるクライアントツール | 出典 |
 |---|---|---|---|---|---|---|
 | E1 | 既存の NAS データへ分析と AI の読み手を足す | アプリは NFS や SMB のまま、Amazon SageMaker、Amazon Athena、AWS Glue などが同じデータを読む | 公式の想定 | なし | AWS CLI | U5、U10 |
-| E2 | オンプレミスの ONTAP から移したデータの S3 利用 | SnapMirror で FSx for ONTAP へ移したデータに、Access Point で S3 の読み手をつなぐ | 公式の想定（NetApp と Dremio のブログ） | なし | なし | U10、U11、U12 |
+| E2 | オンプレミスの ONTAP から移したデータの S3 利用 | SnapMirror で FSx for ONTAP へ移したデータに、Access Point で S3 の読み手をつなぐ | 公式の想定（NetApp と Dremio の、ほぼ同じ内容のブログ 2 本） | なし | なし | U10、U11、U12 |
 | E3 | サーバーレスとコンテナのアプリが共有データを読む | 設定ファイル、参照データ、コンテンツ、モデルのファイルなどを、S3 API で読む | 公式の想定 | なし | AWS CLI | U5 |
-| E4 | ボリュームとバケットの間のサーバー側コピー | アーカイブ用のストレージクラスへの退避、バケットの機能（ライフサイクル、イベント通知）の利用、他チームのバケットへの書き出し | 公式の想定（U8）に加えて、[Playbook の記録](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-points-server-side-copy-use-cases.md)にバケット→ボリューム、ボリューム→バケットの両方向がある | バケット→ボリュームのコピー（3 ツール）のみ。ボリューム→バケットは本検証で未測定 | AWS CLI、s5cmd、rclone | U8、記録 |
+| E4a | バケットからボリュームへのサーバー側コピー | バケットのデータをボリュームへ入れる（パートナーのバケットからの取り込みなど） | 公式の想定（U8） | バケット→ボリュームのコピー（3 ツール） | AWS CLI、s5cmd、rclone | U8、記録 |
+| E4b | ボリュームからバケットへのサーバー側コピー | アーカイブ用のストレージクラスへの退避、バケットの機能（ライフサイクル、イベント通知）の利用、他チームのバケットへの書き出し。退避、ライフサイクル、イベント通知の記述は Playbook のノートにあり、U8 にはない | 公式の想定（U8 はコピー自体、Playbook の[ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-points-server-side-copy-use-cases.md)が用途） | 本検証で未測定。Playbook に実測の記録がある | なし（クライアントツールでの動作は未確認） | U8、Playbook |
 | E5 | 定期ジョブでのバックアップ、同期、取り込み | cron や定期ジョブから、ボリュームのファイルをバケットや他のストレージと同期する | 推定 | 一覧、取得、書き込み、削除（1 回ずつ）。定期実行は未測定 | AWS CLI、s5cmd、rclone | 記録 |
 | E6 | 大量のファイルの並列転送 | 多数のファイルを並列に転送する | 推定 | 取得と書き込みを 1 ファイルずつ。並列転送は未測定 | s5cmd、AWS CLI | 記録 |
 | E7 | ほかのクラウドやストレージとの同期 | rclone で、複数のバックエンドの間を同期する | 推定 | rclone の一覧、取得、書き込み、削除（1 つのバックエンドのみ） | rclone | 記録 |
-| E8 | 外部のデータ基盤からの読み取り | Dremio、Snowflake、Databricks が Access Point を読む | 公開事例（Snowflake と Databricks は著者の検証記事）、公式の想定（Dremio はベンダーのブログ） | なし | なし | U12、U13、U14 |
+| E8 | 外部のデータ基盤からの読み取り | Dremio、Snowflake、Databricks が Access Point を読む。Snowflake は、検証 2026-05 の記事で、ステージに `AWS_ACCESS_POINT_ARN` を指定すると読め、指定しないと LIST は通るが SELECT が失敗した（2026-09 に周辺の記述が訂正され、この中心の発見は不変）。Databricks は、Instance Profile と boto3 による直接の読み取りは通ったが Unity Catalog のガバナンスの外で、Unity Catalog の External Location は、著者の追記（2026-05-26）が、`access_point` フィールドは一般提供でなく文書から削除されており、部分的な成功は非対応の副作用と読むのが妥当、と書く | 公開事例（Snowflake と Databricks は著者の検証記事、各 1 環境）、公式の想定（Dremio は、NetApp のブログと同じ内容の Dremio 自身のブログ） | なし | なし | U11、U12、U13、U14 |
 | E9 | 商用のファイル転送・ストリーミング製品の利用 | File Mover Express、LucidLink Connect、LucidLink Suite が Access Point を使う | 推定 | なし（チェックリストは利用者が記入） | 商用ツール | tool-facts |
 
 E4 のサーバー側コピーは、Access Point を直接読めるサービス（Athena、Glue、Bedrock Knowledge Bases）へ渡すだけなら要りません。判断の表は、Playbook の[サーバー側コピーのユースケース](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-points-server-side-copy-use-cases.md)にあります。
@@ -85,10 +86,10 @@ E4 のサーバー側コピーは、Access Point を直接読めるサービス�
 
 | 経路 | 向く場面 | 制約 | 確認の状況（確認済み / 文書上 / 未確認 / 範囲外） |
 |---|---|---|---|
-| Access Point を S3 の API で直接使う | 読み手が S3 API に対応し、アクセスポイントのエイリアスか ARN を指定できる | 条件付き書き込み（`If-None-Match`）は未対応で、`aws s3 cp --no-overwrite` は失敗した。ストレージクラスは `FSX_ONTAP` だけ。そのほかの上限は [Playbook の制約ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) | 確認済み（4 ツールの操作、2026-11-24） |
+| Access Point を S3 の API で直接使う | 読み手が S3 API に対応し、アクセスポイントのエイリアスか ARN を指定できる | 条件付き書き込み（`If-None-Match`）は未対応で、`aws s3 cp --no-overwrite` は失敗した（U15）。ストレージクラスは `FSX_ONTAP` だけ。そのほかの上限は [Playbook の制約ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) | 確認済み（4 ツールの操作、2026-11-24） |
 | ボリュームを NFS や SMB でマウントする | アプリがファイルパスを前提にする。名前の変更や追記が要る | ホストからボリュームへのネットワーク到達と、マウントの権限が要る | 未確認（このリポジトリでは測っていない） |
 | Mountpoint for Amazon S3 でファイルパスとして見せる | S3 API を使えないアプリが、ファイルとして読み書きする | 既定では上書き、追記、削除ができない。リネームは未実装 | 確認済み（2026-11-24、[記録](../benchmarks/records/2026-11-24-client-tools-stage3.md)） |
-| バケットへサーバー側コピーする | バケット側の機能が要る。または正本がバケットにある | 複製が 2 か所になる。所有者、モード、更新時刻は写らない（Playbook の実測。本検証は属性を測っていない）。コピーは同一リージョン内（U8） | 確認済み（バケット→ボリュームを 3 ツールで、2026-11-24）。ボリューム→バケットは Playbook の記録 |
+| バケットへサーバー側コピーする | バケット側の機能が要る。または正本がバケットにある | 複製が 2 か所になる。写るのは中身だけで、所有者、モード、更新時刻は、コピー先の設定とコピーした時刻になった（Playbook の実測。ファイルシステムユーザーが root の構成のみ。root 以外は未測定）。コピーは同一リージョン内（U8）。ファイルシステム間（FSx for OpenZFS を含む）のコピーは U8 にあるが、このリポジトリの範囲外 | 確認済み（バケット→ボリュームを 3 ツールで、2026-11-24）。ボリューム→バケットは Playbook の記録 |
 | SnapMirror や AWS DataSync で複製や移行をする | ボリューム単位の複製、属性を保つ移行 | このリポジトリはクライアントツールが対象のため扱わない | 範囲外 |
 
 軸ごとの比較は、[Mountpoint と S3 Access Points の使い分け](mountpoint-vs-s3-access-points.md)と、[選び方](how-to-choose.md)にあります。
@@ -107,7 +108,7 @@ E4 のサーバー側コピーは、Access Point を直接読めるサービス�
 - Access Point を付けたことによる、既存の NFS と SMB のワークロードへの影響（スループット容量の共有）。
 - Athena が読むファイル形式、パーティション、小さなファイルが多い場合の挙動。
 - 表にない連携先の対応。表にないことは、未対応を意味しない。
-- Snowflake と Databricks の構成は、著者の 1 環境での検証記事で、各社が FSx for ONTAP の Access Point を対応構成として文書化しているとは確認していません。
+- Snowflake と Databricks の構成は、著者の 1 環境での検証記事です。NetApp のブログ（U10）は、この 2 つのプラットフォームへつなげられると書いていますが、各社自身の文書では、対応構成として確認していません。
 - 検索で見つけた文書のうち、本文を開いて読んだものだけを出典に載せました。
 
 ## 出典一覧
@@ -130,5 +131,6 @@ E4 のサーバー側コピーは、Access Point を直接読めるサービス�
 | U12 | Dremio ブログ: From file systems to AI insights | https://www.dremio.com/blog/from-file-systems-to-ai-insights-dremio-cloud-amazon-fsx-for-netapp-ontap/ |
 | U13 | 著者の検証記事: Snowflake と S3 Access Points | https://dev.to/aws-builders/snowflake-and-fsx-for-ontap-s3-access-points-from-access-denied-to-working-external-tables-9k8 |
 | U14 | 著者の検証記事: Databricks と S3 Access Points | https://dev.to/aws-builders/databricks-and-fsx-for-ontap-s3-access-points-a-layer-by-layer-validation-of-observed-boundaries-p4d |
+| U15 | FSx for ONTAP ユーザーガイド: Access point compatibility | https://docs.aws.amazon.com/fsx/latest/ONTAPGuide/access-points-for-fsxn-object-api-support.html |
 | 記録 | このリポジトリの 2026-11-24 の実機確認 | [2026-11-24-client-tools-stage3.md](../benchmarks/records/2026-11-24-client-tools-stage3.md) |
 | tool-facts | このリポジトリのツールの事実確認 | [tool-facts.md](tool-facts.md) |

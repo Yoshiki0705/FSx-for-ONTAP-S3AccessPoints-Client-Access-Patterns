@@ -138,14 +138,17 @@ EDGE_STYLE = (
 # with its Amazon / AWS prefix. A role goes in a second line under the full service name.
 LABELS: dict[str, dict[str, str]] = {
     "aws_cloud": {"ja": "AWS Cloud", "en": "AWS Cloud"},
-    "nfs": {"ja": "NFS / SMB のクライアント", "en": "NFS / SMB clients"},
+    "nfs": {
+        "ja": "NFS / SMB のクライアント ※4<br>(置き場所は問わない)",
+        "en": "NFS / SMB clients *4<br>(location not specified)",
+    },
     "fsx": {
         "ja": "Amazon FSx for NetApp ONTAP<br>(ボリューム)",
         "en": "Amazon FSx for NetApp ONTAP<br>(volume)",
     },
     "ap": {"ja": "S3 Access Points<br>(FSx for ONTAP 用)", "en": "S3 Access Points<br>(for FSx for ONTAP)"},
-    "frame_client": {"ja": "クライアントツール", "en": "Client tools"},
-    "ec2": {"ja": "Amazon EC2<br>(クライアント ※1)", "en": "Amazon EC2<br>(client *1)"},
+    "frame_client": {"ja": "クライアントツール ※1", "en": "Client tools *1"},
+    "ec2": {"ja": "Amazon EC2<br>(クライアント)", "en": "Amazon EC2<br>(client)"},
     "tool_cli": {"ja": "AWS CLI", "en": "AWS CLI"},
     "tool_s5cmd": {"ja": "s5cmd", "en": "s5cmd"},
     "tool_rclone": {"ja": "rclone", "en": "rclone"},
@@ -153,8 +156,8 @@ LABELS: dict[str, dict[str, str]] = {
     "frame_bucket": {"ja": "S3 の汎用バケット", "en": "S3 general purpose bucket"},
     "s3": {"ja": "Amazon S3<br>(汎用バケット)", "en": "Amazon S3<br>(general purpose bucket)"},
     "frame_services": {
-        "ja": "S3 API で読む AWS サービス（想定）",
-        "en": "AWS services that read the S3 API (expected)",
+        "ja": "S3 API で読む AWS サービス（想定）※3",
+        "en": "AWS services that read the S3 API (expected) *3",
     },
     "athena": {"ja": "Amazon Athena<br>(SQL)", "en": "Amazon Athena<br>(SQL)"},
     "bedrock": {"ja": "Amazon Bedrock<br>(Knowledge Bases)", "en": "Amazon Bedrock<br>(Knowledge Bases)"},
@@ -164,7 +167,7 @@ LABELS: dict[str, dict[str, str]] = {
     "e_files": {"ja": "同じファイル", "en": "Same files"},
     "e_client": {"ja": "S3 API", "en": "S3 API"},
     "e_copy": {"ja": "コピー ※2", "en": "Copy *2"},
-    "e_services": {"ja": "S3 API ※3", "en": "S3 API *3"},
+    "e_services": {"ja": "S3 API", "en": "S3 API"},
     "notes": {
         "ja": (
             "<b>補足</b><br>"
@@ -172,27 +175,26 @@ LABELS: dict[str, dict[str, str]] = {
             "AWS CLI、s5cmd、rclone、Mountpoint for Amazon S3。2026-11-24 に ap-northeast-1 の EC2 から"
             "操作を実機で確認した（1 構成、各 1 回）。<br>"
             "※2 <b>実機で測ったコピーは、バケットからボリュームへの向きだけ</b><br>"
-            "CopyObject と UploadPartCopy を AWS CLI、s5cmd、rclone で確認。逆向きは Playbook の記録。"
-            "ドキュメントでは同一リージョン内。所有者、モード、更新時刻は写らない（Playbook の実測）。<br>"
-            "※3 <b>右下の AWS サービスは文書上の想定</b><br>"
+            "AWS CLI、s5cmd、rclone で確認。逆向きは Playbook の記録。ドキュメントでは同一リージョン内。"
+            "所有者、モード、更新時刻は写らなかった（Playbook の実測。root のユーザーの構成のみ）。<br>"
+            "※3 <b>枠内の AWS サービスは文書上の想定</b><br>"
             "このリポジトリでは実機を確認していない。<br>"
             "※4 <b>NFS / SMB クライアントの置き場所は問わない</b><br>"
-            "図は、クライアントが VPC 内かオンプレミスかを示さない。"
+            "VPC 内かオンプレミスかを、図は示さない。"
         ),
         "en": (
             "<b>Notes</b><br>"
             "*1 <b>Four client tools</b><br>"
-            "AWS CLI, s5cmd, rclone, and Mountpoint for Amazon S3. Their operations were checked on "
-            "real hardware from an EC2 instance in ap-northeast-1 on 2026-11-24 (one configuration, "
-            "one run each).<br>"
+            "AWS CLI, s5cmd, rclone, and Mountpoint for Amazon S3. Checked on real hardware from an EC2 "
+            "instance in ap-northeast-1 on 2026-11-24 (one configuration, one run each).<br>"
             "*2 <b>The copy measured on real hardware ran only from bucket to volume</b><br>"
-            "CopyObject and UploadPartCopy with AWS CLI, s5cmd, and rclone. The other direction is in a "
-            "Playbook record. The documents say one Region only. Owner, mode, and modification time are "
-            "not carried over (a Playbook measurement).<br>"
-            "*3 <b>The AWS services at the lower right are expectations from documents</b><br>"
+            "With AWS CLI, s5cmd, and rclone. The other direction is in a Playbook record. The documents "
+            "say one Region only. Owner, mode, and modification time were not carried over (a Playbook "
+            "measurement, root user configuration only).<br>"
+            "*3 <b>The AWS services in the frame are expectations from documents</b><br>"
             "Not checked on real hardware in this repository.<br>"
             "*4 <b>Where the NFS / SMB clients run is not specified</b><br>"
-            "The figure does not show whether they are in the VPC or on premises."
+            "The figure does not show VPC or on premises."
         ),
     },
 }
@@ -305,7 +307,7 @@ def _overview() -> Diagram:
         height=900,
         rects=(
             Rect("aws_cloud", "group", "aws_cloud", 10, 10, 960, 880),
-            Rect("nfs", "box", "nfs", 40, 56, 280, 40),
+            Rect("nfs", "box", "nfs", 30, 52, 300, 56),
             Rect("frame_client", "frame", "frame_client", 590, 40, 370, 270),
             Rect("tool_cli", "box", "tool_cli", 745, 78, 205, 38),
             Rect("tool_s5cmd", "box", "tool_s5cmd", 745, 124, 205, 38),
@@ -313,7 +315,7 @@ def _overview() -> Diagram:
             Rect("tool_mp", "box", "tool_mp", 745, 216, 205, 38),
             Rect("frame_bucket", "frame", "frame_bucket", 590, 340, 370, 200),
             Rect("frame_services", "frame", "frame_services", 590, 570, 370, 310),
-            Rect("notes", "note", "notes", 30, 340, 440, 440),
+            Rect("notes", "note", "notes", 30, 340, 440, 380),
         ),
         nodes=(
             Node("fsx", "fsx_ontap", "fsx", 140, 140),
@@ -346,7 +348,7 @@ def _overview() -> Diagram:
                 exit_at=(1.0, 0.5),
                 entry_at=(0.0, 0.5),
                 plain=True,
-                label_at=0.8,
+                label_at=0.82,
                 label_offset=(0, -14),
             ),
             Edge(
@@ -356,7 +358,7 @@ def _overview() -> Diagram:
                 "e_services",
                 exit_at=(1.0, 0.5),
                 entry_at=(0.0, 0.5),
-                label_at=0.85,
+                label_at=0.9,
                 label_offset=(0, -14),
             ),
         ),
@@ -461,6 +463,17 @@ def render(diagram: Diagram, lang: str, uris: dict[str, str]) -> str:
 
     lines += ["      </root>", "    </mxGraphModel>", "  </diagram>", "</mxfile>", ""]
     xml = "\n".join(lines)
+    # A note marker must also appear on a label in the figure, or the note points at nothing.
+    note_text = label("notes", lang)
+    figure_text = " ".join(
+        label(k, lang)
+        for k in {e.label for e in diagram.edges if e.label}
+        | {n.label for n in diagram.nodes}
+        | {r.label for r in diagram.rects if r.kind != "note"}
+    )
+    for marker in re.findall(r"(?:※|\*)\d", note_text):
+        if marker not in figure_text:
+            raise SystemExit(f"build_diagrams: note marker {marker} is not on any label of the figure")
     ET.fromstring(xml)  # a corrupt cell is dropped silently by draw.io; fail here instead
     for cid in (
         [e.cid for e in diagram.edges] + [r.cid for r in diagram.rects] + [n.cid for n in diagram.nodes]
