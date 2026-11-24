@@ -2,7 +2,7 @@
 
 🌐 **Language**: [日本語](README.md) | **English**
 
-> **Confirmation level**: The version and the README statements are confirmed from the official documents (`D`, 2026-11-24). Whether it accepts an FSx for ONTAP access point is not stated and has not been measured (`C`).
+> **Confirmation level**: The version and the README statements are confirmed from the official documents (`D`, 2026-11-24). Whether it accepts an FSx for ONTAP access point is not stated and has not been measured (`C`). Measured (2026-11-24): It accepted the alias without `--endpoint-url`; `cp`, download and `rm` worked and the content hash matched. `cp` from a bucket to the access point completed without the data passing through the client (27,340 bytes sent and received).
 
 ## Overview and target use cases
 
@@ -55,4 +55,4 @@ Nothing remains on the client. The resources created in stage 3 are removed by t
 | Current version (v2.3.0) | `D` | [s5cmd releases](https://github.com/peak/s5cmd/releases), 2026-11-24 |
 | S3-to-S3 copy and `--endpoint-url` behavior | `D` | [README](https://github.com/peak/s5cmd/blob/master/README.md), 2026-11-24 |
 | Setup steps | `C` | - |
-| Verification steps | `C` | - |
+| Verification steps | `M` | [2026-11-24 record](../../../benchmarks/records/2026-11-24-client-tools-stage3.en.md) |

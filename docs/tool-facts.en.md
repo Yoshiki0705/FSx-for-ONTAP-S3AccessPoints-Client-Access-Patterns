@@ -40,6 +40,8 @@ This page records what the official documents say about four tools (AWS CLI, s5c
 
 ## What could not be confirmed
 
+Items 1 to 3 were checked on a real file system on 2026-11-24 ([2026-11-24 record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md)). s5cmd and rclone accepted the alias, and Mountpoint mounted by alias and by ARN. The list below stays as a record of what the documents alone could not confirm.
+
 1. Whether s5cmd and rclone accept an FSx for ONTAP access point alias.
 2. Whether Mountpoint for Amazon S3 can mount an FSx for ONTAP access point alias. The Mountpoint README says it does not support S3-compatible storage other than Amazon S3 (S16). An FSx for ONTAP access point is an AWS S3 endpoint, but it cannot be read from the README whether that README covers it.
 3. Whether each tool issues `CopyObject` or `UploadPartCopy` for a server-side copy ([server-side copy](server-side-copy.en.md)).

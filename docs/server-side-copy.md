@@ -2,7 +2,7 @@
 
 🌐 **言語**: **日本語** | [English](server-side-copy.en.md)
 
-> **区分**: このページは公式文書の読み取りと、段階 3 の確認手順だけを持ちます。ツールが実際に `CopyObject` や `UploadPartCopy` を発行するかは、実機で確かめるまで `C`（未実測）です。
+> **区分**: このページは公式文書の読み取りと、段階 3 の確認手順を持ちます。AWS CLI、s5cmd、rclone は 2026-11-24 に 1 回ずつ実機で確かめました（[2026-11-24 の記録](../benchmarks/records/2026-11-24-client-tools-stage3.md#サーバー側コピーの結果)）。Mountpoint for Amazon S3 は確かめていません（`C`）。
 
 2026-11 に、S3 Access Points を使って Amazon S3 の汎用バケットと FSx for ONTAP のボリュームの間を、`CopyObject` と `UploadPartCopy` でサーバー側コピーできるようになりました（同一リージョン。[What's New](https://aws.amazon.com/about-aws/whats-new/2026/11/s3-access-points-server-side-copy-fsx/)、2026-11-24 に閲覧）。それまでは、サーバー側コピーができず、オブジェクトを一度取得してアップロードし直す必要がありました。このページは、クライアントツールがその新しい経路を使うのか、取得とアップロードに戻るのかを整理します。
 
@@ -20,9 +20,9 @@
 
 | ツール | サーバー側コピーを起こす指定 | 文書からの見込み | 判定の方法 | 水準 |
 |---|---|---|---|---|
-| AWS CLI | `aws s3 cp s3://<バケット>/<キー> s3://<エイリアス>/<キー>` | S3 から S3 へのコピーとして扱われる。マルチパートのコピーでは追加で `HeadObject`、`GetObjectTagging`、`PutObjectTagging` を呼びうる | `--debug` の出力で `CopyObject` か `UploadPartCopy` を探す。`--copy-props none` との差も取る | `C` |
-| s5cmd | `s5cmd cp s3://<バケット>/<キー> s3://<エイリアス>/<キー>` | README は S3 から S3 のコピーをサーバー側と書く。5 GB を超えるオブジェクトは未対応と書く | 同じコピーの前後で、クライアントの送受信バイト数を比べる。CloudTrail のデータイベントで確認する | `C` |
-| rclone | 同じリモートの中で `rclone copy <リモート>:<バケット> <リモート>:<エイリアス>` | 同じリモートの中のコピーはサーバー側コピー（公式文書）。`--s3-copy-cutoff` を超えるとチャンクでコピーする | `-vv --dump headers` で `x-amz-copy-source` ヘッダーを探す | `C` |
+| AWS CLI | `aws s3 cp s3://<バケット>/<キー> s3://<エイリアス>/<キー>` | S3 から S3 へのコピーとして扱われる。マルチパートのコピーでは追加で `HeadObject`、`GetObjectTagging`、`PutObjectTagging` を呼びうる | `--debug` の出力で `CopyObject` か `UploadPartCopy` を探す。`--copy-props none` との差も取る | `M` |
+| s5cmd | `s5cmd cp s3://<バケット>/<キー> s3://<エイリアス>/<キー>` | README は S3 から S3 のコピーをサーバー側と書く。5 GB を超えるオブジェクトは未対応と書く | 同じコピーの前後で、クライアントの送受信バイト数を比べる。CloudTrail のデータイベントで確認する | `M` |
+| rclone | 同じリモートの中で `rclone copy <リモート>:<バケット> <リモート>:<エイリアス>` | 同じリモートの中のコピーはサーバー側コピー（公式文書）。`--s3-copy-cutoff` を超えるとチャンクでコピーする | `-vv --dump headers` で `x-amz-copy-source` ヘッダーを探す | `M` |
 | Mountpoint for Amazon S3 | なし | サーバー側コピーを起こす指定が文書にない。マウント先どうしの `cp` は、読み出して書く操作になると見込む（未確認）。リネームは S3 Express One Zone だけが対象 | マウント先から別のアクセスポイントへ `cp` し、送受信バイト数がオブジェクトの大きさに近いことを確認する | `C` |
 
 ## 段階 3 での確認方法

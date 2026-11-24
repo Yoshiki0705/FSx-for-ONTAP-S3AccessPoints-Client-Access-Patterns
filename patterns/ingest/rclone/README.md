@@ -2,7 +2,7 @@
 
 🌐 **言語**: **日本語** | [English](README.en.md)
 
-> **確認水準**: 版と S3 バックエンドの記載は公式文書で確認（`D`、2026-11-24）。FSx for ONTAP のアクセスポイントに対する動作は未実測（`C`）です。
+> **確認水準**: 版と S3 バックエンドの記載は公式文書で確認（`D`、2026-11-24）。FSx for ONTAP のアクセスポイントに対する動作は未実測（`C`）です。 実測（2026-11-24）: `force_path_style = false` でエイリアスに届き、`lsf`、`copyto`、取得、`delete` が通った。`check` はハッシュを照合できなかった。バケットからアクセスポイントへのサーバー側コピーは、既定ではコピー元の `STANDARD` を送って `InvalidStorageClass` で失敗し、`--s3-storage-class FSX_ONTAP` で成功した。
 
 ## 概要と対象の利用場面
 
@@ -61,4 +61,4 @@ no_check_bucket = true
 | 現行版（v1.76.0） | `D` | [rclone リリース](https://github.com/rclone/rclone/releases)、2026-11-24 |
 | S3 バックエンドの設定項目 | `D` | [rclone の S3 ドキュメント](https://rclone.org/s3/)、2026-11-24 |
 | 設定手順 | `C` | - |
-| 確認手順 | `C` | - |
+| 確認手順 | `M` | [2026-11-24 の記録](../../../benchmarks/records/2026-11-24-client-tools-stage3.md) |

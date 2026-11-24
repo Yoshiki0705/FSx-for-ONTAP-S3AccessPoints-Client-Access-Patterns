@@ -2,7 +2,7 @@
 
 🌐 **Language**: [日本語](server-side-copy.md) | **English**
 
-> **Level**: This page holds only a reading of the official documents and the stage 3 verification steps. Until a tool is run on a real file system, whether it issues `CopyObject` or `UploadPartCopy` stays `C` (not measured).
+> **Level**: This page holds a reading of the official documents and the stage 3 verification steps. AWS CLI, s5cmd and rclone were each checked once on a real file system on 2026-11-24 ([2026-11-24 record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md#server-side-copy-results)). Mountpoint for Amazon S3 was not checked (`C`).
 
 In 2026-11, S3 Access Points made it possible to copy on the server side, with `CopyObject` and `UploadPartCopy`, between Amazon S3 general purpose buckets and FSx for ONTAP volumes within one Region ([What's New](https://aws.amazon.com/about-aws/whats-new/2026/11/s3-access-points-server-side-copy-fsx/), read on 2026-11-24). Before that, server-side copy was unavailable, and each object had to be downloaded and uploaded again. This page sorts out whether each client tool uses the new path or falls back to download and upload.
 
@@ -20,9 +20,9 @@ The boundary is the path. The Playbook issue covers tools that go through NFS, S
 
 | Tool | Arguments that should trigger a server-side copy | Expectation from the documents | How to judge | Level |
 |---|---|---|---|---|
-| AWS CLI | `aws s3 cp s3://<bucket>/<key> s3://<alias>/<key>` | Handled as an S3-to-S3 copy. A multipart copy may make extra `HeadObject`, `GetObjectTagging` and `PutObjectTagging` calls | Look for `CopyObject` or `UploadPartCopy` in the `--debug` output. Also compare with `--copy-props none` | `C` |
-| s5cmd | `s5cmd cp s3://<bucket>/<key> s3://<alias>/<key>` | The README calls an S3-to-S3 copy server-side. It says objects larger than 5 GB are unsupported | Compare the client's sent and received bytes before and after the same copy. Check the CloudTrail data events | `C` |
-| rclone | `rclone copy <remote>:<bucket> <remote>:<alias>` within one remote | A copy within one remote is a server-side copy (official documentation). Above `--s3-copy-cutoff` it copies in chunks | Look for the `x-amz-copy-source` header with `-vv --dump headers` | `C` |
+| AWS CLI | `aws s3 cp s3://<bucket>/<key> s3://<alias>/<key>` | Handled as an S3-to-S3 copy. A multipart copy may make extra `HeadObject`, `GetObjectTagging` and `PutObjectTagging` calls | Look for `CopyObject` or `UploadPartCopy` in the `--debug` output. Also compare with `--copy-props none` | `M` |
+| s5cmd | `s5cmd cp s3://<bucket>/<key> s3://<alias>/<key>` | The README calls an S3-to-S3 copy server-side. It says objects larger than 5 GB are unsupported | Compare the client's sent and received bytes before and after the same copy. Check the CloudTrail data events | `M` |
+| rclone | `rclone copy <remote>:<bucket> <remote>:<alias>` within one remote | A copy within one remote is a server-side copy (official documentation). Above `--s3-copy-cutoff` it copies in chunks | Look for the `x-amz-copy-source` header with `-vv --dump headers` | `M` |
 | Mountpoint for Amazon S3 | None | The documents give no argument that triggers a server-side copy. A `cp` between two mounts is expected to read and then write (unconfirmed). Rename applies only to S3 Express One Zone | `cp` from one mount to another access point and check that the sent and received bytes are close to the object size | `C` |
 
 ## How stage 3 verifies

@@ -2,7 +2,7 @@
 
 🌐 **言語**: **日本語** | [English](README.en.md)
 
-> **確認水準**: 設定手順の書式は公式文書で確認（`D`、2026-11-24）。FSx for ONTAP のアクセスポイントに対する動作は未実測（`C`）です。
+> **確認水準**: 設定手順の書式は公式文書で確認（`D`、2026-11-24）。FSx for ONTAP のアクセスポイントに対する動作は未実測（`C`）です。 実測（2026-11-24）: エイリアスと ARN の両方で `ls`、`cp`（64 MiB はマルチパート）、`sync`、`rm` が通り、中身のハッシュが一致した。`--no-overwrite` は `If-None-Match` を送るため `NotImplemented` で失敗した。バケットからアクセスポイントへの `aws s3 cp` は `UploadPartCopy` のサーバー側コピーになった。
 
 ## 概要と対象の利用場面
 
@@ -56,4 +56,4 @@ aws s3 cp s3://arn:aws:s3:us-west-2:123456789012:accesspoint/myaccesspoint/mykey
 | 現行版（2.42.2） | `D` | [AWS CLI のタグ](https://github.com/aws/aws-cli/tags)、2026-11-24 |
 | ARN とエイリアスの指定 | `D` | 上の 2 つの AWS ドキュメント、2026-11-24 |
 | 設定手順 | `C` | - |
-| 確認手順 | `C` | - |
+| 確認手順 | `M` | [2026-11-24 の記録](../../../benchmarks/records/2026-11-24-client-tools-stage3.md) |

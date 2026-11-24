@@ -40,6 +40,8 @@ AWS CLI、s5cmd、rclone、Mountpoint for Amazon S3 の 4 つについて、現�
 
 ## 確認できなかったこと
 
+項目 1〜3 は、2026-11-24 に実機で確かめました（[2026-11-24 の記録](../benchmarks/records/2026-11-24-client-tools-stage3.md)）。s5cmd と rclone はエイリアスを受け付け、Mountpoint はエイリアスと ARN でマウントできました。下の一覧は、文書だけでは確認できなかったことの記録として残します。
+
 1. s5cmd と rclone が、FSx for ONTAP のアクセスポイントのエイリアスを受け付けるか。
 2. Mountpoint for Amazon S3 が、FSx for ONTAP のアクセスポイントのエイリアスをマウントできるか。Mountpoint の README は、Amazon S3 以外の S3 互換ストレージについてはサポートしないと書いている（S16）。FSx for ONTAP のアクセスポイントは AWS の S3 エンドポイントだが、この README が対象にするかは読み取れない。
 3. 各ツールが、サーバー側コピーで `CopyObject` と `UploadPartCopy` のどちらを発行するか（[サーバー側コピー](server-side-copy.md)）。

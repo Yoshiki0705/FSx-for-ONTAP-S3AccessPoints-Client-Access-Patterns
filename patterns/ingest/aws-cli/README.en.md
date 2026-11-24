@@ -2,7 +2,7 @@
 
 🌐 **Language**: [日本語](README.md) | **English**
 
-> **Confirmation level**: The syntax of the setup steps is confirmed from the official documents (`D`, 2026-11-24). Behavior against an FSx for ONTAP access point has not been measured (`C`).
+> **Confirmation level**: The syntax of the setup steps is confirmed from the official documents (`D`, 2026-11-24). Behavior against an FSx for ONTAP access point has not been measured (`C`). Measured (2026-11-24): With both alias and ARN, `ls`, `cp` (64 MiB as multipart), `sync` and `rm` worked and the content hash matched. `--no-overwrite` sends `If-None-Match` and failed with `NotImplemented`. `aws s3 cp` from a bucket to the access point became a server-side copy with `UploadPartCopy`.
 
 ## Overview and target use cases
 
@@ -56,4 +56,4 @@ Nothing remains on the client. The S3 Access Points and the bucket created in st
 | Current version (2.42.2) | `D` | [AWS CLI tags](https://github.com/aws/aws-cli/tags), 2026-11-24 |
 | Specifying an ARN and an alias | `D` | The two AWS documents above, 2026-11-24 |
 | Setup steps | `C` | - |
-| Verification steps | `C` | - |
+| Verification steps | `M` | [2026-11-24 record](../../../benchmarks/records/2026-11-24-client-tools-stage3.en.md) |

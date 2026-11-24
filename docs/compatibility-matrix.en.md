@@ -16,9 +16,9 @@ Confirmation status of the operations client tools perform against FSx for ONTAP
 
 | Tool | List | Get | Put | Multipart | Delete | Mount behavior | Date | Pinned Playbook commit | Source |
 |---|---|---|---|---|---|---|---|---|---|
-| AWS CLI（version unconfirmed） | C | C | C | C | C | - | - | - | - |
-| rclone（version unconfirmed） | C | C | C | C | C | - | - | - | - |
-| s5cmd（version unconfirmed） | C | C | C | C | C | - | - | - | - |
+| AWS CLI 2.38.0 | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | - | 2026-11-24 | 038fef7fb6ad | [2026-11-24 record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) |
+| rclone v1.76.0 | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | C | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | - | 2026-11-24 | 038fef7fb6ad | [2026-11-24 record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) |
+| s5cmd v2.3.0 | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | C | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | - | 2026-11-24 | 038fef7fb6ad | [2026-11-24 record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) |
 | AWS Transfer Family（version unconfirmed） | C | C | C | C | C | - | - | - | - |
 | File Mover Express（version unconfirmed） | C | C | C | C | C | - | - | - | - |
 
@@ -26,7 +26,7 @@ Confirmation status of the operations client tools perform against FSx for ONTAP
 
 | Tool | List | Get | Put | Multipart | Delete | Mount behavior | Date | Pinned Playbook commit | Source |
 |---|---|---|---|---|---|---|---|---|---|
-| Mountpoint for Amazon S3（version unconfirmed） | C | C | C | C | C | C | - | - | - |
+| Mountpoint for Amazon S3 1.24.0 | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | 2026-11-24 | 038fef7fb6ad | [2026-11-24 record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) |
 | rclone mount（version unconfirmed） | C | C | C | C | C | C | - | - | - |
 | LucidLink Connect（version unconfirmed） | C | C | C | C | C | C | - | - | - |
 | LucidLink Suite（version unconfirmed） | C | C | C | C | C | C | - | - | - |
@@ -37,19 +37,21 @@ The second column is what the AWS compatibility list ([Access point compatibilit
 
 | S3 operation | AWS compatibility list | AWS CLI | s5cmd | rclone | Mountpoint for Amazon S3 |
 |---|---|---|---|---|---|
-| ListObjectsV2 | Supported | C | C | C | C |
-| GetObject and HeadObject | Supported | C | C | C | C |
-| PutObject | Supported | C | C | C | C |
-| Multipart (CreateMultipartUpload, UploadPart, CompleteMultipartUpload, AbortMultipartUpload) | Supported | C | C | C | C |
-| CopyObject (same Region) | Supported | C | C | C | C |
-| UploadPartCopy (same Region) | Supported | C | C | C | C |
-| DeleteObject and DeleteObjects | Supported | C | C | C | C |
-| GetObjectTagging and PutObjectTagging | Supported | C | C | C | C |
+| ListObjectsV2 | Supported | M | C | C | M |
+| GetObject and HeadObject | Supported | M | C | C | M |
+| PutObject | Supported | M | C | M | M |
+| Multipart (CreateMultipartUpload, UploadPart, CompleteMultipartUpload, AbortMultipartUpload) | Supported | M | C | C | M |
+| CopyObject (same Region) | Supported | M | C | M | C |
+| UploadPartCopy (same Region) | Supported | M | C | C | C |
+| DeleteObject and DeleteObjects | Supported | C | C | C | M |
+| GetObjectTagging and PutObjectTagging | Supported | M | C | C | C |
 | HeadBucket and GetBucketLocation | Supported | C | C | C | C |
-| Conditional writes (`If-None-Match`, `If-Match`) | Not supported | C | C | C | C |
+| Conditional writes (`If-None-Match`, `If-Match`) | Not supported | M | C | C | C |
 | ListObjectVersions | Not supported | C | C | C | C |
 
 > **How to read the cross-check**: If a tool issues an operation that the AWS list marks as not supported, that operation should fail. For example, the documents do not say how `aws s3 cp --no-overwrite` prevents an overwrite, and it can fail if it uses a conditional write. Stage 3 checks, tool by tool, whether the rows that the AWS list marks as not supported are issued.
+
+> **Cells filled by measurement**: An `M` cell means the tool's debug log showed it issuing that operation ([2026-11-24 record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md)). s5cmd stays `C` because its log shows no API names. AWS CLI sent `If-None-Match` with `aws s3 cp --no-overwrite`, and the access point returned `NotImplemented`.
 
 ## Update procedure
 

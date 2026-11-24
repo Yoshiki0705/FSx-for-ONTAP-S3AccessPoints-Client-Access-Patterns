@@ -2,7 +2,7 @@
 
 🌐 **言語**: **日本語** | [English](README.en.md)
 
-> **確認水準**: 版と README の記載は公式文書で確認（`D`、2026-11-24）。FSx for ONTAP のアクセスポイントを受け付けるかは文書に記載がなく、未実測（`C`）です。
+> **確認水準**: 版と README の記載は公式文書で確認（`D`、2026-11-24）。FSx for ONTAP のアクセスポイントを受け付けるかは文書に記載がなく、未実測（`C`）です。 実測（2026-11-24）: `--endpoint-url` なしでエイリアスを受け付け、`cp`、取得、`rm` が通り、中身のハッシュが一致した。バケットからアクセスポイントへの `cp` は、クライアントをデータが通らない形（送受信 27,340 バイト）で完了した。
 
 ## 概要と対象の利用場面
 
@@ -55,4 +55,4 @@ S3 Access Points は仮想ホスト形式だけを受け付けます（[Referenc
 | 現行版（v2.3.0） | `D` | [s5cmd リリース](https://github.com/peak/s5cmd/releases)、2026-11-24 |
 | S3 から S3 のコピー、`--endpoint-url` の挙動 | `D` | [README](https://github.com/peak/s5cmd/blob/master/README.md)、2026-11-24 |
 | 設定手順 | `C` | - |
-| 確認手順 | `C` | - |
+| 確認手順 | `M` | [2026-11-24 の記録](../../../benchmarks/records/2026-11-24-client-tools-stage3.md) |

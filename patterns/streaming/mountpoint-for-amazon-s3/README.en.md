@@ -2,7 +2,7 @@
 
 🌐 **Language**: [日本語](README.md) | **English**
 
-> **Confirmation level**: The version and the file operation behavior are confirmed from the official documents (`D`, 2026-11-24). Whether an FSx for ONTAP access point can be mounted is not stated and has not been measured (`C`).
+> **Confirmation level**: The version and the file operation behavior are confirmed from the official documents (`D`, 2026-11-24). Whether an FSx for ONTAP access point can be mounted is not stated and has not been measured (`C`). Measured (2026-11-24): It mounted with both alias and ARN. New writes, reads, overwrite and delete (with the flags), rename and append gave the same results as a mount of an ordinary bucket in the same run.
 
 ## Overview and target use cases
 
@@ -60,4 +60,4 @@ Unmount with `umount`. The access point and the bucket created in stage 3 are re
 | Current version (1.25.0) | `D` | [Mountpoint changelog](https://github.com/awslabs/mountpoint-s3/blob/main/mountpoint-s3/CHANGELOG.md), 2026-11-24 |
 | File operation behavior | `D` | [SEMANTICS.md](https://github.com/awslabs/mountpoint-s3/blob/main/doc/SEMANTICS.md), 2026-11-24 |
 | Setup steps | `C` | - |
-| Verification steps | `C` | - |
+| Verification steps | `M` | [2026-11-24 record](../../../benchmarks/records/2026-11-24-client-tools-stage3.en.md) |

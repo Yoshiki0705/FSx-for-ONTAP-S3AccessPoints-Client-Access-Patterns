@@ -2,7 +2,7 @@
 
 🌐 **言語**: **日本語** | [English](README.en.md)
 
-> **確認水準**: 版とファイル操作の挙動は公式文書で確認（`D`、2026-11-24）。FSx for ONTAP のアクセスポイントをマウントできるかは文書に記載がなく、未実測（`C`）です。
+> **確認水準**: 版とファイル操作の挙動は公式文書で確認（`D`、2026-11-24）。FSx for ONTAP のアクセスポイントをマウントできるかは文書に記載がなく、未実測（`C`）です。 実測（2026-11-24）: エイリアスと ARN の両方でマウントできた。新規書き込み、読み出し、上書きと削除（フラグ付き）、リネーム、追記の結果は、同じ回の通常のバケットのマウントと同じだった。
 
 ## 概要と対象の利用場面
 
@@ -60,4 +60,4 @@ FSx for ONTAP のアクセスポイントのエイリアス（`-ext-s3alias`）�
 | 現行版（1.25.0） | `D` | [Mountpoint の変更履歴](https://github.com/awslabs/mountpoint-s3/blob/main/mountpoint-s3/CHANGELOG.md)、2026-11-24 |
 | ファイル操作の挙動 | `D` | [SEMANTICS.md](https://github.com/awslabs/mountpoint-s3/blob/main/doc/SEMANTICS.md)、2026-11-24 |
 | 設定手順 | `C` | - |
-| 確認手順 | `C` | - |
+| 確認手順 | `M` | [2026-11-24 の記録](../../../benchmarks/records/2026-11-24-client-tools-stage3.md) |

@@ -38,9 +38,13 @@ There are three ways to reach FSx for ONTAP data. This page lines up the constra
 | You want to narrow S3-side permissions with IAM and the access point | a or b | The permissions of the access point's file system user remain the real upper bound |
 | Moving data to and from a bucket in another account | b | Same-Region copies only. [Server-side copy](server-side-copy.en.md) |
 
+## Results of the 2026-11-24 run
+
+Paths a and b were each checked once on a real file system on 2026-11-24 ([2026-11-24 record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md)). Mountpoint for Amazon S3 mounted the FSx for ONTAP access point by both alias and ARN. New writes, reads, overwrite and delete (with the flags), rename and append gave the same results as a mount of an ordinary bucket in the same run. Path c (NFS) was not checked.
+
 ## What is not confirmed
 
-1. Whether Mountpoint can mount an FSx for ONTAP access point alias. If it can, the results of `ls`, `cat`, a new write, an overwrite, a delete, and a rename.
+1. Results over multiple runs, with other Mountpoint versions, and on an NTFS security style volume.
 2. How real directories in the volume appear, as Mountpoint directories and as S3 prefixes.
 3. Whether the owner and permissions of FSx for ONTAP files show up as S3 metadata or as Mountpoint file attributes.
 4. How changes appear when a and c are used on the same volume at the same time (including the cache time-to-live).

@@ -30,6 +30,7 @@ TEXT_SUFFIXES = {
     ".txt",
     ".cfg",
     ".example",
+    ".tsv",
     ".ini",
     ".svg",
 }

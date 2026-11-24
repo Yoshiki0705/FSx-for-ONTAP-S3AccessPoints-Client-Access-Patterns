@@ -2,7 +2,7 @@
 
 🌐 **Language**: [日本語](README.md) | **English**
 
-> **Confirmation level**: The version and the S3 backend statements are confirmed from the official documents (`D`, 2026-11-24). Behavior against an FSx for ONTAP access point has not been measured (`C`).
+> **Confirmation level**: The version and the S3 backend statements are confirmed from the official documents (`D`, 2026-11-24). Behavior against an FSx for ONTAP access point has not been measured (`C`). Measured (2026-11-24): With `force_path_style = false` it reached the alias; `lsf`, `copyto`, download and `delete` worked. `check` could not compare hashes. A server-side copy from a bucket to the access point failed by default with `InvalidStorageClass` (it sent the source's `STANDARD`) and succeeded with `--s3-storage-class FSX_ONTAP`.
 
 ## Overview and target use cases
 
@@ -61,4 +61,4 @@ A configuration file remains on the client. The configuration created in stage 3
 | Current version (v1.76.0) | `D` | [rclone releases](https://github.com/rclone/rclone/releases), 2026-11-24 |
 | S3 backend options | `D` | [rclone S3 documentation](https://rclone.org/s3/), 2026-11-24 |
 | Setup steps | `C` | - |
-| Verification steps | `C` | - |
+| Verification steps | `M` | [2026-11-24 record](../../../benchmarks/records/2026-11-24-client-tools-stage3.en.md) |
