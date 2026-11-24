@@ -8,31 +8,32 @@ S3 Access Points on Amazon FSx for NetApp ONTAP (FSx for ONTAP below) show volum
 
 ## Integration targets and use cases
 
+The classes differ by the kind of public evidence, not by product merit. A target missing from the table is one this repository did not look into, not one that is unsupported.
+
 | Target | Type | Expected use case | Evidence class | Client tools involved | Source |
 |---|---|---|---|---|---|
 | Amazon Athena and AWS Glue Data Catalog | AWS service | N1, E1: SQL analysis of file-share data | Official expectation | AWS CLI (loading and checking data) | U6, U5 |
 | AWS Glue (Apache Spark, Python shell, Ray) | AWS service | N1, E1: ETL, with results written back to the same volume | Official expectation | AWS CLI (checking) | U6 |
 | Amazon Bedrock Knowledge Bases | AWS service | N2: RAG over a document share | Official expectation | AWS CLI (loading and checking documents) | U6 |
-| Amazon Quick | AWS service | N2, E1: Use an access point alias as the source of a knowledge base | Official expectation | AWS CLI (checking) | U5, U7 |
-| Amazon Bedrock AgentCore | AWS service | N3: List, read, and search through an MCP gateway and AWS Lambda | Official expectation (AWS blog example) | MCP clients (Kiro, Claude Desktop): estimate, not checked | U7 |
-| Amazon Quick dashboards (the AWS blog writes Quick Sight) | AWS service | N3: Dashboards over summarized data | Official expectation (AWS blog example) | None | U7 |
+| Amazon Quick (U5 writes Quick Suite) | AWS service | N2, N3, E1: Give an access point alias as an S3 integration and make a knowledge base (the steps in U5). U7 also shows dashboards over summarized data and scheduled automations in its example | Official expectation | AWS CLI (checking) | U5, U7 |
+| Amazon Bedrock AgentCore | AWS service | N3: List, read, and search through an MCP gateway and AWS Lambda | Official expectation (the U7 example architecture) | None (the reader is the Lambda on the AgentCore side. The MCP client patterns are not checked in this repository) | U7 |
 | Amazon SageMaker | AWS service | E1: Read as machine learning data | Official expectation | AWS CLI (checking) | U5, U10 |
 | Amazon EMR Serverless | AWS service | N1, E1: Spark jobs | Official expectation | None | U6 |
 | Amazon Redshift and Amazon OpenSearch Service | AWS service | E1: Analytics and log analytics | Official expectation (NetApp blog) | None | U10 |
 | AWS Lambda | AWS service | N7, E3: Processing arriving files, reading shared data | Official expectation | AWS CLI (checking behavior) | U6, U5 |
 | Amazon CloudFront | AWS service | N6: HLS video delivery | Official expectation | None | U6 |
 | AWS Transfer Family | AWS service | N4: SFTP, FTPS, and FTP hand-off to outside parties | Official expectation | None (the SFTP clients on the other side are within the Transfer Family documentation) | U6, U9 |
-| Amazon S3 general purpose bucket | AWS service | N5, E4: Server-side copy (`CopyObject`, `UploadPartCopy`) | Official expectation | AWS CLI, s5cmd, rclone | U8, Record |
-| S3 Batch Operations | AWS service | E4: Jobs for bulk copy | Real-environment record in the Playbook | AWS CLI | [Playbook note (Japanese)](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-points-server-side-copy-use-cases.md) |
+| Amazon S3 general purpose bucket | AWS service | N5, E4: Server-side copy (`CopyObject`, `UploadPartCopy`) | Official expectation. Bucket to volume was run in this check | AWS CLI, s5cmd, rclone (volume to bucket was not run here) | U8, Record |
+| S3 Batch Operations | AWS service | E4: Jobs for bulk copy | Official expectation, plus a [Playbook record](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-points-server-side-copy-use-cases.md) (Japanese) | None (not run in this check) | Playbook |
 | Dremio Cloud | External product | E8: Read the access point and write results to an FSx for ONTAP S3 bucket | Official expectation (Dremio and NetApp blogs) | None | U11, U12 |
 | Snowflake | External product | E8: An external table with `AWS_ACCESS_POINT_ARN` set on the stage | Public case (the author, one environment) | None | U13 |
-| Databricks | External product | E8: Reading the access point. The result differs by path | Public case (the author, one environment) | None | U14 |
+| Databricks | External product | E8: Reading the access point. In the author's article, direct reads with an instance profile and boto3 worked, while through a Unity Catalog external location only a read of an explicit path worked, and table creation and listing did not | Public case (the author, one environment) | None | U14 |
 | Apps that use file paths | App | N8: Provide file paths to apps that cannot use the S3 API | Estimate. Mount and basic operations checked | Mountpoint for Amazon S3 | Record |
 | Commercial transfer and streaming products | External product | E9: File Mover Express, LucidLink Connect, LucidLink Suite | Estimate | Commercial tools (manual checklist) | tool-facts |
 
 ## What each client tool is involved in
 
-| Tool | Integrations and use cases | Run in this repository | Pattern |
+| Tool | Integrations and use cases | Related operations run (not a test of the use case) | Pattern |
 |---|---|---|---|
 | AWS CLI | Loading and checking data (N1, N2, N7, E1, E3), server-side copy (N5, E4), scheduled jobs (E5) | List, get, put, multipart, delete, server-side copy | [patterns/ingest/aws-cli](../patterns/ingest/aws-cli/README.en.md) |
 | s5cmd | Bulk transfer (E6), server-side copy (N5, E4), scheduled jobs (E5) | List, get, put, delete, server-side copy (performance not measured) | [patterns/ingest/s5cmd](../patterns/ingest/s5cmd/README.en.md) |
@@ -48,7 +49,7 @@ For each integration target, the entry falls into one of three kinds.
 | Entry | Fits when | Constraint |
 |---|---|---|
 | The service reads the access point directly | The target supports the S3 API (Athena, Glue, Bedrock Knowledge Bases, and others) | Stay within the S3 operations the access point supports. Per-target settings are needed (for example the Snowflake stage) |
-| Move to a bucket with a client tool, then let the target read it | The target assumes a bucket, or bucket features (lifecycle, event notifications) are needed | Two copies of the data exist. File attributes are not carried over |
+| Move to a bucket with a client tool, then let the target read it | The target assumes a bucket, or bucket features (lifecycle, event notifications) are needed | Two copies of the data exist. Owner, mode, and modification time are not carried over (a Playbook measurement; attributes were not measured here). Copy stays within one Region (U8) |
 | Present it as a file path with a client tool | An app that cannot use the S3 API reads and writes | Follow the tool's write constraints (Mountpoint does not allow overwrite, append, or delete by default) |
 
 Specifications and limits are first-hand information in the Playbook [constraints note (Japanese)](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md). They are not copied here.
@@ -57,5 +58,5 @@ Specifications and limits are first-hand information in the Playbook [constraint
 
 - That the targets in the table can actually read an FSx for ONTAP access point.
 - The per-target configuration requirements. A setting such as the Snowflake `AWS_ACCESS_POINT_ARN` is a record from the author's one environment.
-- Support for services not in the table, such as Amazon Macie. The Playbook cites a record that Macie is out of scope.
+- Support for services not in the table. Where the Playbook [constraints note](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) or [server-side copy note](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-points-server-side-copy-use-cases.md) (both Japanese) covers one, read that.
 - Performance and cost per target.
