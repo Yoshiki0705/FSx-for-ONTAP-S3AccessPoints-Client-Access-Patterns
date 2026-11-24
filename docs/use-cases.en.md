@@ -128,7 +128,7 @@ You choose a network origin when you create an access point. The two options eac
 - Which file formats Athena reads, partitioning, and behavior with many small files.
 - Pitfalls of storage class and encryption specifications in server-side copy. AWS's compatibility list says that when the destination is an FSx for ONTAP access point, any server-side encryption other than SSE-FSX returns a 400 (U15). The Playbook has a measurement record. This check did not measure it.
 - Integration targets not in the tables. Absence from a table does not mean unsupported.
-- The Snowflake and Databricks configurations are the author's validation articles, one environment each. The NetApp blog (U10) says these two platforms can be connected, but this page does not confirm it in either vendor's own documentation as a supported configuration.
+- The Snowflake and Databricks configurations are the author's validation articles, one environment each. The NetApp blog (U10) says Snowflake and Databricks can be connected, but this page does not confirm it in either vendor's own documentation as a supported configuration.
 - Only documents whose body was opened and read are listed as sources.
 
 ## Source list
