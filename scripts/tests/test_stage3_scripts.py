@@ -18,8 +18,18 @@ BENCH = SCRIPTS.parent / "benchmarks"
 SCRIPT_DIR = BENCH / "scripts"
 
 
+# Every test runs with stub cloud CLIs first on PATH. A test that reached a real `aws` once created a
+# bucket in a real account, so any call that escapes the dry run now fails and leaves a marker.
+STUB_DIR = Path(tempfile.mkdtemp())
+CALLED = STUB_DIR / "called"
+for tool in ("aws", "s5cmd", "rclone", "mount-s3", "umount", "openssl"):
+    stub = STUB_DIR / tool
+    stub.write_text(f'#!/bin/sh\necho "{tool} $*" >> "{CALLED}"\nexit 99\n', encoding="utf-8")
+    stub.chmod(0o755)
+
+
 def sh(script: str, *args: str, env: dict | None = None) -> subprocess.CompletedProcess:
-    e = {**os.environ, **(env or {})}
+    e = {**os.environ, "PATH": f"{STUB_DIR}:{os.environ['PATH']}", **(env or {})}
     return subprocess.run(
         ["bash", str(SCRIPT_DIR / script), *args],
         capture_output=True,
@@ -96,6 +106,19 @@ class DryRun(unittest.TestCase):
             self.assertFalse(state.exists())
 
 
+class NoRealCalls(unittest.TestCase):
+    def test_dry_runs_never_call_a_cloud_cli(self):
+        CALLED.unlink(missing_ok=True)
+        for script, args in (
+            ("stage3-setup.sh", ()),
+            ("stage3-measure.sh", ("--case", "all")),
+            ("stage3-export-evidence.sh", ()),
+            ("stage3-teardown.sh", ()),
+        ):
+            sh(script, *args)
+        self.assertFalse(CALLED.exists(), CALLED.read_text(encoding="utf-8") if CALLED.exists() else "")
+
+
 class Refusals(unittest.TestCase):
     def test_execute_needs_a_config_file(self):
         with tempfile.TemporaryDirectory() as d:
@@ -111,7 +134,8 @@ class Refusals(unittest.TestCase):
                 f'. "{SCRIPT_DIR}/stage3-lib.sh"; DRY_RUN=0; STATE_FILE="{state}"; '
                 "step FOO echo MUST-NOT-RUN; step BAR echo RAN-BAR"
             )
-            r = subprocess.run(["bash", "-c", script], capture_output=True, text=True, check=False)
+            env = {**os.environ, "PATH": f"{STUB_DIR}:{os.environ['PATH']}"}
+            r = subprocess.run(["bash", "-c", script], capture_output=True, text=True, env=env, check=False)
             self.assertIn("skip FOO", r.stdout)
             self.assertNotIn("MUST-NOT-RUN\n", r.stdout.replace("+ echo MUST-NOT-RUN", ""))
             self.assertIn("RAN-BAR", r.stdout)

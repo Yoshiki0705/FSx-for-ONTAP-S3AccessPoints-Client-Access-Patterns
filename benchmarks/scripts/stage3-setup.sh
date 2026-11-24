@@ -44,8 +44,15 @@ step VOLUME aws fsx create-volume --region "$REGION" --volume-type ONTAP --name 
   --ontap-configuration "JunctionPath=/${AP_NAME},SecurityStyle=UNIX,SizeInMegabytes=${VOLUME_SIZE_MB},StorageEfficiencyEnabled=false,StorageVirtualMachineId=${SVM_ID}" \
   --tags "${TAGS[@]}"
 if [ "$DRY_RUN" -eq 0 ]; then
-  VOLUME_ID="$(aws fsx describe-volumes --region "$REGION" --filters "Name=file-system-id,Values=${FS_ID}" \
-    --query "Volumes[?Name=='${VOLUME_NAME}'].VolumeId | [0]" --output text)" || die "describe-volumes failed"
+  VOLUME_ID=""
+  for _ in 1 2 3 4 5 6 7 8; do
+    VOLUME_ID="$(aws fsx describe-volumes --region "$REGION" --filters "Name=file-system-id,Values=${FS_ID}" \
+      --query "Volumes[?Name=='${VOLUME_NAME}'].VolumeId" --output text)" || die "describe-volumes failed"
+    # shortcut: the CLI applies --query per page, so pick the fsvol- token instead of using | [0]
+    VOLUME_ID="$(printf '%s\n' "$VOLUME_ID" | grep -m1 '^fsvol-' || true)"
+    case "$VOLUME_ID" in fsvol-*) break ;; esac
+    sleep 5 # the new volume can take a few seconds to show up in the listing
+  done
   case "$VOLUME_ID" in fsvol-*) ;; *) die "volume id not found for $VOLUME_NAME" ;; esac
   state_set VOLUME_ID "$VOLUME_ID"
   until [ "$(aws fsx describe-volumes --region "$REGION" --volume-ids "$VOLUME_ID" --query 'Volumes[0].Lifecycle' --output text)" = "CREATED" ]; do

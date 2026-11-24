@@ -67,9 +67,10 @@ case_control() {
 }
 
 case_aws_cli() {
-  local dst
-  for dst in "s3://$BUCKET/awscli" "s3://$ALIAS/awscli" "s3://$AP_ARN/awscli"; do
-    local tag="${dst#s3://}"; tag="${tag%%/*}"; tag="${tag:0:12}"
+  local dst tag
+  for pair in "bucket|s3://$BUCKET/awscli" "alias|s3://$ALIAS/awscli" "arn|s3://$AP_ARN/awscli"; do
+    tag="${pair%%|*}"
+    dst="${pair#*|}"
     run_log "$RESULT_DIR/awscli-$tag-ls.log" aws s3 ls "$dst/"
     run_log "$RESULT_DIR/awscli-$tag-cp1m.log" aws s3 cp "$WORK/1m.bin" "$dst/1m.bin" --debug
     run_log "$RESULT_DIR/awscli-$tag-cp64m.log" aws s3 cp "$WORK/64m.bin" "$dst/64m.bin" --debug
@@ -82,9 +83,10 @@ case_aws_cli() {
 }
 
 case_s5cmd() {
-  local dst
-  for dst in "s3://$BUCKET/s5cmd" "s3://$ALIAS/s5cmd"; do
-    local tag="${dst#s3://}"; tag="${tag%%/*}"; tag="${tag:0:12}"
+  local dst tag
+  for pair in "bucket|s3://$BUCKET/s5cmd" "alias|s3://$ALIAS/s5cmd"; do
+    tag="${pair%%|*}"
+    dst="${pair#*|}"
     probe "s5cmd-$tag-ls" s5cmd --log debug ls "$dst/"
     probe "s5cmd-$tag-cp1m" s5cmd --log debug cp "$WORK/1m.bin" "$dst/1m.bin"
     probe "s5cmd-$tag-cp64m" s5cmd --log debug cp "$WORK/64m.bin" "$dst/64m.bin"
@@ -101,8 +103,8 @@ case_rclone() {
   else
     echo "+ write $conf ([ap] type=s3 provider=AWS env_auth=true region=$REGION force_path_style=false no_check_bucket=true)"
   fi
-  for mode in "$BUCKET" "$ALIAS"; do
-    local tag="${mode:0:12}"
+  for pair in "bucket|$BUCKET" "alias|$ALIAS"; do
+    local tag="${pair%%|*}" mode="${pair#*|}"
     probe "rclone-$tag-lsf" rclone --config "$conf" lsf "ap:$mode/"
     probe "rclone-$tag-copy" rclone --config "$conf" copyto "$WORK/64m.bin" "ap:$mode/rclone/64m.bin" -vv --dump headers
     probe "rclone-$tag-get" rclone --config "$conf" copyto "ap:$mode/rclone/64m.bin" "$WORK/rclone-64m.back" -vv
