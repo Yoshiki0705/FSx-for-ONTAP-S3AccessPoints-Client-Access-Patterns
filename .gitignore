@@ -13,3 +13,6 @@ __pycache__/
 # Local environment and secrets
 .env
 *.pem
+
+# Stage 3 raw evidence holds real IDs (the redacted record is what gets committed)
+benchmarks/records/*/raw/

@@ -1,0 +1,15 @@
+control-ap-roundtrip	match
+awscli-bucket-64m	match
+awscli-alias-64m	match
+awscli-arn-64m	match
+s5cmd-bucket-64m	match
+s5cmd-alias-64m	match
+rclone-bucket-64m	match
+rclone-alias-64m	match
+ssc-control	match
+ssc-awscli	match
+ssc-awscli-none	match
+ssc-s5cmd	match
+ssc-rclone	MISMATCH
+ssc-dlul	match
+ssc-rclone-storageclass	match
