@@ -157,7 +157,7 @@ LABELS: dict[str, dict[str, str]] = {
         "en": "AWS services that read the S3 API (expected)",
     },
     "athena": {"ja": "Amazon Athena<br>(SQL)", "en": "Amazon Athena<br>(SQL)"},
-    "bedrock": {"ja": "Amazon Bedrock<br>(RAG)", "en": "Amazon Bedrock<br>(RAG)"},
+    "bedrock": {"ja": "Amazon Bedrock<br>(Knowledge Bases)", "en": "Amazon Bedrock<br>(Knowledge Bases)"},
     "lambda": {"ja": "AWS Lambda<br>(処理)", "en": "AWS Lambda<br>(processing)"},
     "transfer": {"ja": "AWS Transfer Family<br>(SFTP)", "en": "AWS Transfer Family<br>(SFTP)"},
     "e_nfs": {"ja": "NFS / SMB", "en": "NFS / SMB"},
@@ -170,23 +170,29 @@ LABELS: dict[str, dict[str, str]] = {
             "<b>補足</b><br>"
             "※1 <b>クライアントツールは 4 つ</b><br>"
             "AWS CLI、s5cmd、rclone、Mountpoint for Amazon S3。2026-11-24 に ap-northeast-1 の EC2 から"
-            "操作を実機で確認した。<br>"
-            "※2 <b>サーバー側コピーは同一リージョン内</b><br>"
-            "CopyObject と UploadPartCopy。実機で確認したのは AWS CLI、s5cmd、rclone。"
-            "ファイルの属性は写らない。<br>"
+            "操作を実機で確認した（1 構成、各 1 回）。<br>"
+            "※2 <b>実機で測ったコピーは、バケットからボリュームへの向きだけ</b><br>"
+            "CopyObject と UploadPartCopy を AWS CLI、s5cmd、rclone で確認。逆向きは Playbook の記録。"
+            "ドキュメントでは同一リージョン内。所有者、モード、更新時刻は写らない（Playbook の実測）。<br>"
             "※3 <b>右下の AWS サービスは文書上の想定</b><br>"
-            "このリポジトリでは実機を確認していない。"
+            "このリポジトリでは実機を確認していない。<br>"
+            "※4 <b>NFS / SMB クライアントの置き場所は問わない</b><br>"
+            "図は、クライアントが VPC 内かオンプレミスかを示さない。"
         ),
         "en": (
             "<b>Notes</b><br>"
             "*1 <b>Four client tools</b><br>"
             "AWS CLI, s5cmd, rclone, and Mountpoint for Amazon S3. Their operations were checked on "
-            "real hardware from an EC2 instance in ap-northeast-1 on 2026-11-24.<br>"
-            "*2 <b>Server-side copy stays in one Region</b><br>"
-            "CopyObject and UploadPartCopy. Checked on real hardware with AWS CLI, s5cmd, and rclone. "
-            "File attributes are not carried over.<br>"
+            "real hardware from an EC2 instance in ap-northeast-1 on 2026-11-24 (one configuration, "
+            "one run each).<br>"
+            "*2 <b>The copy measured on real hardware ran only from bucket to volume</b><br>"
+            "CopyObject and UploadPartCopy with AWS CLI, s5cmd, and rclone. The other direction is in a "
+            "Playbook record. The documents say one Region only. Owner, mode, and modification time are "
+            "not carried over (a Playbook measurement).<br>"
             "*3 <b>The AWS services at the lower right are expectations from documents</b><br>"
-            "Not checked on real hardware in this repository."
+            "Not checked on real hardware in this repository.<br>"
+            "*4 <b>Where the NFS / SMB clients run is not specified</b><br>"
+            "The figure does not show whether they are in the VPC or on premises."
         ),
     },
 }
@@ -241,15 +247,16 @@ class Edge:
     label: str = ""
     exit_at: tuple[float, float] | None = None
     entry_at: tuple[float, float] | None = None
-    both_ways: bool = False
+    # A line with no arrowhead: it states that two things are connected without claiming a direction.
+    plain: bool = False
     # Where the label sits: position along the path (-1..1, 0 = midpoint) and a pixel nudge.
     label_at: float | None = None
     label_offset: tuple[int, int] | None = None
 
     def style(self) -> str:
         style = EDGE_STYLE
-        if self.both_ways:
-            style += "startArrow=open;startFill=0;"
+        if self.plain:
+            style = style.replace("endArrow=open;endFill=0;", "endArrow=none;")
         if self.exit_at:
             style += f"exitX={self.exit_at[0]};exitY={self.exit_at[1]};exitDx=0;exitDy=0;"
         if self.entry_at:
@@ -306,7 +313,7 @@ def _overview() -> Diagram:
             Rect("tool_mp", "box", "tool_mp", 745, 216, 205, 38),
             Rect("frame_bucket", "frame", "frame_bucket", 590, 340, 370, 200),
             Rect("frame_services", "frame", "frame_services", 590, 570, 370, 310),
-            Rect("notes", "note", "notes", 30, 340, 440, 300),
+            Rect("notes", "note", "notes", 30, 340, 440, 440),
         ),
         nodes=(
             Node("fsx", "fsx_ontap", "fsx", 140, 140),
@@ -319,8 +326,8 @@ def _overview() -> Diagram:
             Node("transfer", "transfer", "transfer", 810, 750),
         ),
         edges=(
-            Edge("e_nfs", "nfs", "fsx", "e_nfs", exit_at=(0.5, 1.0), entry_at=(0.5, 0.0)),
-            Edge("e_files", "fsx", "ap", "e_files", exit_at=(1.0, 0.5), entry_at=(0.0, 0.5)),
+            Edge("e_nfs", "nfs", "fsx", "e_nfs", exit_at=(0.5, 1.0), entry_at=(0.5, 0.0), plain=True),
+            Edge("e_files", "fsx", "ap", "e_files", exit_at=(1.0, 0.5), entry_at=(0.0, 0.5), plain=True),
             Edge(
                 "e_client",
                 "ap",
@@ -338,8 +345,8 @@ def _overview() -> Diagram:
                 "e_copy",
                 exit_at=(1.0, 0.5),
                 entry_at=(0.0, 0.5),
-                both_ways=True,
-                label_at=0.85,
+                plain=True,
+                label_at=0.8,
                 label_offset=(0, -14),
             ),
             Edge(
