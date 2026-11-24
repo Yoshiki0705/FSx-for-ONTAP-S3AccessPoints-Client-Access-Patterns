@@ -16,7 +16,7 @@ When S3 Access Points are attached to an Amazon FSx for NetApp ONTAP (FSx for ON
 
 The use case tables have a "Related operations run" column. It is not a test of the use case. It names only the operations whose behavior was checked in the 2026-11-24 record. The use cases themselves (performance, operation, consistency) were not measured.
 
-An official expectation is not a basis for adoption, procurement, or audit. The classes differ by product because the kind of public evidence differs, not because one product is better than another.
+An official expectation is not a basis for adoption, procurement, or audit. The classes differ by product because the kind of public evidence differs, not as a ranking of products.
 
 ## How S3 is used on on-premises ONTAP
 
