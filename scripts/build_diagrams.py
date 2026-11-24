@@ -321,7 +321,16 @@ def _overview() -> Diagram:
         edges=(
             Edge("e_nfs", "nfs", "fsx", "e_nfs", exit_at=(0.5, 1.0), entry_at=(0.5, 0.0)),
             Edge("e_files", "fsx", "ap", "e_files", exit_at=(1.0, 0.5), entry_at=(0.0, 0.5)),
-            Edge("e_client", "ap", "frame_client", "e_client", exit_at=(1.0, 0.5), entry_at=(0.0, 0.5)),
+            Edge(
+                "e_client",
+                "ap",
+                "frame_client",
+                "e_client",
+                exit_at=(1.0, 0.5),
+                entry_at=(0.0, 0.5),
+                label_at=0.85,
+                label_offset=(0, -14),
+            ),
             Edge(
                 "e_copy",
                 "ap",
