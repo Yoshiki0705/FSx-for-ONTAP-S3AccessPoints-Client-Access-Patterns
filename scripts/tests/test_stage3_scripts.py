@@ -103,16 +103,19 @@ class Refusals(unittest.TestCase):
             self.assertEqual(r.returncode, 2)
             self.assertIn("no config file", r.stderr)
 
-    def test_setup_refuses_when_a_run_is_already_recorded(self):
+    def test_step_skips_what_the_state_file_records_as_done(self):
         with tempfile.TemporaryDirectory() as d:
-            cfg, state = Path(d) / "c.env", Path(d) / "s.env"
-            cfg.write_text("RUN_ID=test-run\n", encoding="utf-8")
-            state.write_text("RUN_ID=old\n", encoding="utf-8")
-            r = sh(
-                "stage3-setup.sh", "--execute", env={"STAGE3_CONFIG": str(cfg), "STAGE3_STATE": str(state)}
+            state = Path(d) / "s.env"
+            state.write_text("FOO_DONE=1\n", encoding="utf-8")
+            script = (
+                f'. "{SCRIPT_DIR}/stage3-lib.sh"; DRY_RUN=0; STATE_FILE="{state}"; '
+                "step FOO echo MUST-NOT-RUN; step BAR echo RAN-BAR"
             )
-            self.assertEqual(r.returncode, 2)
-            self.assertIn("already recorded", r.stderr)
+            r = subprocess.run(["bash", "-c", script], capture_output=True, text=True, check=False)
+            self.assertIn("skip FOO", r.stdout)
+            self.assertNotIn("MUST-NOT-RUN\n", r.stdout.replace("+ echo MUST-NOT-RUN", ""))
+            self.assertIn("RAN-BAR", r.stdout)
+            self.assertIn("BAR_DONE=1", state.read_text(encoding="utf-8"))
 
     def test_teardown_refuses_without_exported_evidence(self):
         with tempfile.TemporaryDirectory() as d:

@@ -136,3 +136,16 @@ nic_bytes() {
   dev="$(ip route show default | awk '/default/ {print $5; exit}')"
   awk -v d="$dev:" '$1 == d {print $2 + $10}' /proc/net/dev
 }
+
+# step NAME CMD...: run one resource-creating command once. NAME_DONE=1 is appended to the state file
+# right after the command succeeds, so a rerun after a network error skips what already exists.
+step() {
+  local name="$1"
+  shift
+  if [ "$DRY_RUN" -eq 0 ] && grep -q "^${name}_DONE=" "$STATE_FILE" 2>/dev/null; then
+    echo "skip $name (already recorded as done)"
+    return 0
+  fi
+  run "$@" || die "step $name failed; rerun after checking the state file and the Run tag"
+  state_set "${name}_DONE" 1
+}

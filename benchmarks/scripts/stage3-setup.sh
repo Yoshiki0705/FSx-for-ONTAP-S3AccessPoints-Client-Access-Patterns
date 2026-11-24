@@ -18,23 +18,29 @@ load_config
 echo "# stage3-setup run_id=$RUN_ID region=$REGION mode=$([ "$DRY_RUN" -eq 1 ] && echo dry-run || echo execute)"
 
 if [ "$DRY_RUN" -eq 0 ]; then
-  [ ! -f "$STATE_FILE" ] || die "state file exists ($STATE_FILE): a run is already recorded. Tear it down first."
-  BUCKET_SUFFIX="$(openssl rand -hex 3)"
-  BUCKET="s3apbench-${RUN_ID}-${BUCKET_SUFFIX}"
-  state_set RUN_ID "$RUN_ID"
-  state_set BUCKET "$BUCKET"
+  if [ -f "$STATE_FILE" ]; then
+    # Resume: read what is already recorded and never create the same resource twice.
+    # shellcheck disable=SC1090
+    . "$STATE_FILE"
+    echo "# resuming run $RUN_ID from $STATE_FILE"
+  else
+    BUCKET_SUFFIX="$(openssl rand -hex 3)"
+    BUCKET="s3apbench-${RUN_ID}-${BUCKET_SUFFIX}"
+    state_set RUN_ID "$RUN_ID"
+    state_set BUCKET "$BUCKET"
+  fi
 fi
 ROLE_NAME="s3apbench-${RUN_ID}-role"
 PROFILE_NAME="s3apbench-${RUN_ID}-profile"
 TAGS=("Key=Project,Value=client-access-patterns" "Key=Run,Value=${RUN_ID}")
 
 # 1 comparison bucket (a normal S3 general purpose bucket: the control and the copy source)
-run aws s3api create-bucket --bucket "$BUCKET" --region "$REGION" \
+step BUCKET aws s3api create-bucket --bucket "$BUCKET" --region "$REGION" \
   --create-bucket-configuration "LocationConstraint=$REGION"
-run aws s3api put-bucket-tagging --bucket "$BUCKET" --tagging "TagSet=[{Key=Project,Value=client-access-patterns},{Key=Run,Value=${RUN_ID}}]"
+step BUCKET_TAGS aws s3api put-bucket-tagging --bucket "$BUCKET" --tagging "TagSet=[{Key=Project,Value=client-access-patterns},{Key=Run,Value=${RUN_ID}}]"
 
 # 2 dedicated test volume (so that removal never touches an existing volume)
-run aws fsx create-volume --region "$REGION" --volume-type ONTAP --name "$VOLUME_NAME" \
+step VOLUME aws fsx create-volume --region "$REGION" --volume-type ONTAP --name "$VOLUME_NAME" \
   --ontap-configuration "JunctionPath=/${AP_NAME},SecurityStyle=UNIX,SizeInMegabytes=${VOLUME_SIZE_MB},StorageEfficiencyEnabled=false,StorageVirtualMachineId=${SVM_ID}" \
   --tags "${TAGS[@]}"
 if [ "$DRY_RUN" -eq 0 ]; then
@@ -55,7 +61,7 @@ AP_OPTS=()
 if [ "${AP_NETWORK:-internet}" = "vpc" ]; then
   AP_OPTS=(--s3-access-point "VpcConfiguration={VpcId=${VPC_ID}}")
 fi
-run aws fsx create-and-attach-s3-access-point --region "$REGION" --name "$AP_NAME" --type ONTAP \
+step AP aws fsx create-and-attach-s3-access-point --region "$REGION" --name "$AP_NAME" --type ONTAP \
   --ontap-configuration "VolumeId=${VOLUME_ID},FileSystemIdentity={Type=UNIX,UnixUser={Name=${FS_USER}}}" \
   ${AP_OPTS[@]+"${AP_OPTS[@]}"}
 if [ "$DRY_RUN" -eq 0 ]; then
@@ -84,13 +90,13 @@ if [ "$DRY_RUN" -eq 0 ]; then
 else
   echo "+ sed s/example-bucket/<bucket>/ $BENCH_DIR/stage3-instance-policy.json > $POLICY_FILE"
 fi
-run aws iam create-role --role-name "$ROLE_NAME" --tags "${TAGS[@]}" \
+step ROLE aws iam create-role --role-name "$ROLE_NAME" --tags "${TAGS[@]}" \
   --assume-role-policy-document "file://$BENCH_DIR/stage3-trust-policy.json"
-run aws iam attach-role-policy --role-name "$ROLE_NAME" --policy-arn arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
-run aws iam put-role-policy --role-name "$ROLE_NAME" --policy-name stage3-data-access \
+step ROLE_ATTACH aws iam attach-role-policy --role-name "$ROLE_NAME" --policy-arn arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+step ROLE_POLICY aws iam put-role-policy --role-name "$ROLE_NAME" --policy-name stage3-data-access \
   --policy-document "file://$POLICY_FILE"
-run aws iam create-instance-profile --instance-profile-name "$PROFILE_NAME" --tags "${TAGS[@]}"
-run aws iam add-role-to-instance-profile --instance-profile-name "$PROFILE_NAME" --role-name "$ROLE_NAME"
+step PROFILE aws iam create-instance-profile --instance-profile-name "$PROFILE_NAME" --tags "${TAGS[@]}"
+step PROFILE_ROLE aws iam add-role-to-instance-profile --instance-profile-name "$PROFILE_NAME" --role-name "$ROLE_NAME"
 state_set ROLE_NAME "$ROLE_NAME"
 state_set PROFILE_NAME "$PROFILE_NAME"
 
@@ -106,8 +112,8 @@ if [ "$DRY_RUN" -eq 0 ]; then
 else
   echo "+ write $CLIENT_ENV (REGION RUN_ID BUCKET ALIAS AP_ARN NFS_ENDPOINT)"
 fi
-run aws s3 cp "$CLIENT_ENV" "s3://${BUCKET}/config/stage3-client.env"
-run aws s3 cp "$STAGE3_DIR/" "s3://${BUCKET}/scripts/" --recursive --exclude "*" --include "stage3-*.sh"
+step CLIENT_ENV aws s3 cp "$CLIENT_ENV" "s3://${BUCKET}/config/stage3-client.env"
+step SCRIPTS aws s3 cp "$STAGE3_DIR/" "s3://${BUCKET}/scripts/" --recursive --exclude "*" --include "stage3-*.sh"
 AMI_PARAM="/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64"
 if [ "$DRY_RUN" -eq 0 ]; then
   sleep 10 # IAM propagation for the new instance profile
@@ -115,7 +121,7 @@ if [ "$DRY_RUN" -eq 0 ]; then
 else
   AMI_ID="ami-0123456789abcdef0"
 fi
-run aws ec2 run-instances --region "$REGION" --image-id "$AMI_ID" --instance-type "$INSTANCE_TYPE" \
+step INSTANCE aws ec2 run-instances --region "$REGION" --image-id "$AMI_ID" --instance-type "$INSTANCE_TYPE" \
   --subnet-id "$SUBNET_ID" --security-group-ids "$SG_ID" --iam-instance-profile "Name=$PROFILE_NAME" \
   --metadata-options "HttpTokens=required,HttpEndpoint=enabled,InstanceMetadataTags=enabled" --count 1 \
   --user-data "file://$STAGE3_DIR/stage3-client-bootstrap.sh" \
