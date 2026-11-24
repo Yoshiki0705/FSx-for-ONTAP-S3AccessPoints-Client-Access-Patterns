@@ -29,6 +29,7 @@ TEXT_SUFFIXES = {
     ".json",
     ".txt",
     ".cfg",
+    ".example",
     ".ini",
     ".svg",
 }
@@ -41,6 +42,8 @@ PINS_FILE = "docs/reference-pins.md"
 
 
 def _excluded(rel: str) -> bool:
+    if rel.startswith("benchmarks/records/") and "/raw/" in rel:
+        return True  # raw evidence keeps real IDs and is gitignored; only the redacted record is committed
     return any(rel == d or rel.startswith(d + "/") for d in EXCLUDE_DIRS) or any(
         part in {"__pycache__", ".ruff_cache"} for part in rel.split("/")
     )
