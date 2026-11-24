@@ -25,7 +25,7 @@ AWS CLI、s5cmd、rclone、Mountpoint for Amazon S3 が、FSx for ONTAP の S3 A
 | IAM ロールとインスタンスプロファイル | `s3apbench-<日時>-role`、`-profile` | `aws iam create-role` ほか | `aws iam delete-role` ほか |
 | EC2 クライアント（c6in.xlarge） | タグ `Name=s3apbench-<日時>` | `aws ec2 run-instances` | `aws ec2 terminate-instances` |
 
-検証専用のボリュームを作る理由は、S3 Access Points を付けたボリュームは、アクセスポイントを外した後も ONTAP からは削除できず、FSx for ONTAP の API から削除する必要があるためです（[Playbook の制約ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md)）。既存のボリュームに付けないので、既存の構成に影響しません。
+検証専用のボリュームを作る理由は、S3 Access Points を付けたボリュームは、アクセスポイントを外した後も ONTAP からは削除できず、FSx for ONTAP の API から削除する必要があるためです（[Playbook の制約ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md)）。既存のボリュームに付けないので、既存の構成に影響しません。
 
 ## 実行手順
 

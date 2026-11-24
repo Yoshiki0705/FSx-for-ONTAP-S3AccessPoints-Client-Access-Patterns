@@ -2,7 +2,7 @@
 
 Confirmation status of the operations client tools perform against FSx for ONTAP S3 Access Points. Every cell is `candidate` (unconfirmed) and carries no numbers.
 
-> **How to read it**: the mark at the start of a cell is the confirmation level. `C` is unconfirmed, `D` is confirmed in official documentation (URL and date), `M` is confirmed by running it (link to the record), and `-` is not applicable. Limits of S3 Access Points themselves are not written here; see the [Playbook note on S3 Access Points constraints](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) (Japanese).
+> **How to read it**: the mark at the start of a cell is the confirmation level. `C` is unconfirmed, `D` is confirmed in official documentation (URL and date), `M` is confirmed by running it (link to the record), and `-` is not applicable. Limits of S3 Access Points themselves are not written here; see the [Playbook note on S3 Access Points constraints](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) (Japanese).
 
 ## Legend
 
@@ -16,9 +16,9 @@ Confirmation status of the operations client tools perform against FSx for ONTAP
 
 | Tool | List | Get | Put | Multipart | Delete | Mount behavior | Date | Pinned Playbook commit | Source |
 |---|---|---|---|---|---|---|---|---|---|
-| AWS CLI 2.38.0 | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | - | 2026-11-24 | 038fef7fb6ad | [2026-11-24 record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) |
-| rclone v1.76.0 | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | C | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | - | 2026-11-24 | 038fef7fb6ad | [2026-11-24 record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) |
-| s5cmd v2.3.0 | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | C | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | - | 2026-11-24 | 038fef7fb6ad | [2026-11-24 record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) |
+| AWS CLI 2.38.0 | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | - | 2026-11-24 | a4c8367f9172 | [2026-11-24 record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) |
+| rclone v1.76.0 | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | C | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | - | 2026-11-24 | a4c8367f9172 | [2026-11-24 record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) |
+| s5cmd v2.3.0 | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | C | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | - | 2026-11-24 | a4c8367f9172 | [2026-11-24 record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) |
 | AWS Transfer Family（version unconfirmed） | C | C | C | C | C | - | - | - | - |
 | File Mover Express（version unconfirmed） | C | C | C | C | C | - | - | - | - |
 
@@ -26,7 +26,7 @@ Confirmation status of the operations client tools perform against FSx for ONTAP
 
 | Tool | List | Get | Put | Multipart | Delete | Mount behavior | Date | Pinned Playbook commit | Source |
 |---|---|---|---|---|---|---|---|---|---|
-| Mountpoint for Amazon S3 1.24.0 | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | 2026-11-24 | 038fef7fb6ad | [2026-11-24 record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) |
+| Mountpoint for Amazon S3 1.24.0 | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | M [record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) | 2026-11-24 | a4c8367f9172 | [2026-11-24 record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) |
 | rclone mount（version unconfirmed） | C | C | C | C | C | C | - | - | - |
 | LucidLink Connect（version unconfirmed） | C | C | C | C | C | C | - | - | - |
 | LucidLink Suite（version unconfirmed） | C | C | C | C | C | C | - | - | - |

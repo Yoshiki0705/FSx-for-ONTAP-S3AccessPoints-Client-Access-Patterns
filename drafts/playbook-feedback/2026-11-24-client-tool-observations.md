@@ -5,7 +5,7 @@
 - 種別 / Kind: Issue
 - 宛先 / Destination: Playbook
 - 状態 / Status: 下書き / draft
-- 関係する文書と節 / Related document and section: https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md#パターンごと成立しない-4-つの不在 （条件付き書き込み）と、未マージのサーバー側コピーの節 / (conditional writes) and the unmerged server-side copy section
+- 関係する文書と節 / Related document and section: https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md#パターンごと成立しない-4-つの不在 （条件付き書き込み）と、未マージのサーバー側コピーの節 / (conditional writes) and the unmerged server-side copy section
 
 ## 観測した事実 / Observed facts
 

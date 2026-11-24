@@ -16,8 +16,8 @@ FSx for ONTAP の S3 Access Points をクライアントツールから使うと
 | 参照の固定（Playbook のコミット、Serverless-Patterns のタグ）の更新 | [docs/reference-pins.md](docs/reference-pins.md) |
 | 言語の追加 | [docs/adding-a-language.md](docs/adding-a-language.md) |
 | 実機ベンチマーク | [benchmarks/README.md](benchmarks/README.md) |
-| ベンダーの「できない」を書く、仕様を引く | [Playbook の証拠の方針](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/evidence-policy.md)、[Playbook の技術主張の書き方](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/agent/domain-knowledge.md) |
-| Playbook 全体の規約（命名、中立性、公開安全） | [Playbook の AGENTS.md](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/AGENTS.md) |
+| ベンダーの「できない」を書く、仕様を引く | [Playbook の証拠の方針](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/evidence-policy.md)、[Playbook の技術主張の書き方](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/agent/domain-knowledge.md) |
+| Playbook 全体の規約（命名、中立性、公開安全） | [Playbook の AGENTS.md](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/AGENTS.md) |
 
 命名、ベンダー中立性、公開安全の規約の本体は Playbook 側にあり、ここには写しません。このリポジトリでの機械検査は `scripts/check_naming.py` と `scripts/check_public_safety.py` です。
 
