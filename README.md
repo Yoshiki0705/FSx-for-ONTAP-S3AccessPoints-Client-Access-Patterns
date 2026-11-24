@@ -4,7 +4,23 @@
 
 Amazon FSx for NetApp ONTAP（以下 FSx for ONTAP）の S3 Access Points を、利用者の端末やサーバのクライアントツールから使うときの手順、確認結果、選び方を集めたリポジトリです。
 
-> **現在の状態**: 足場だけがあります。互換性マトリクスの全セルは `candidate`（未確認）で、数値は 1 つもありません。確認が済んだ項目から `documented` または `measured` に上げます。
+> **現在の状態**: 4 つのツール（AWS CLI、s5cmd、rclone、Mountpoint for Amazon S3）は、2026-11-24 に 1 構成で実機確認済みです（[記録](benchmarks/records/2026-11-24-client-tools-stage3.md)）。性能の数値はありません。商用ツールと rclone mount は未確認（`candidate`）のままです。
+
+![Amazon EC2 上の 4 つのクライアントツールが、S3 Access Points を通して Amazon FSx for NetApp ONTAP のボリュームを S3 API で使い、Amazon S3 の汎用バケットとの間でサーバー側コピーを行い、Amazon Athena、Amazon Bedrock、AWS Lambda、AWS Transfer Family が S3 API で読む構成の図](docs/images/s3ap-client-access-overview.svg)
+
+図 1: クライアントツール、S3 Access Points、ボリューム、バケット、後続の AWS サービスの関係。右下のサービスは文書上の想定で、実機は未確認です。
+
+## 読み始める場所
+
+| 知りたいこと | 読む文書 |
+|---|---|
+| どんな場面で使われるか（オンプレミスの ONTAP、新規と既存の FSx for ONTAP の利用者） | [docs/use-cases.md](docs/use-cases.md) |
+| どの AWS サービスや製品とつながり、どのクライアントツールが関わるか | [docs/integrations-map.md](docs/integrations-map.md) |
+| ツールごとの確認状況 | [docs/compatibility-matrix.md](docs/compatibility-matrix.md) |
+| 用途と要件からの選び方 | [docs/how-to-choose.md](docs/how-to-choose.md) |
+| バケットとボリュームの間のサーバー側コピー | [docs/server-side-copy.md](docs/server-side-copy.md) |
+
+AI エージェント向けの索引は [llms.txt](llms.txt) と [AGENTS.md](AGENTS.md) にあります。
 
 ## このリポジトリの位置づけ
 

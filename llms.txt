@@ -1,0 +1,28 @@
+# FSx for ONTAP S3 Access Points Client Access Patterns
+
+> A Spoke under the Amazon FSx for NetApp ONTAP Adoption Playbook. It holds how client tools
+> (AWS CLI, s5cmd, rclone, Mountpoint for Amazon S3, and commercial transfer products) behave against
+> S3 Access Points attached to FSx for ONTAP volumes: use cases, an integration map, a compatibility
+> matrix, checklists, and one dated real-environment record. It does not copy specifications or limits.
+
+## How to read this repository
+
+Every cell of the compatibility matrix carries a confirmation level: `M` (measured, with a link to the
+record), `D` (documented, with a URL and date), `C` (candidate, unconfirmed, no numbers). Use cases and
+integrations carry an evidence class: public case, official expectation, or estimate. Do not state an
+estimate or an official expectation as "works". Numbers are meaningful only with the environment stated
+next to them (see the record).
+
+Specifications and limits of S3 Access Points are in the Playbook, linked at a pinned commit
+(docs/reference-pins.md). A question of the form "what is the limit on X" is answered there.
+
+## Entry points
+
+- [README (Japanese)](README.md) and [README (English)](README.en.md)
+- [Use cases](docs/use-cases.en.md): on-premises ONTAP S3, new and existing FSx for ONTAP users (Japanese: docs/use-cases.md)
+- [Integration map](docs/integrations-map.en.md): AWS services and products, use cases, and which client tool is involved
+- [Compatibility matrix](docs/compatibility-matrix.en.md): per tool and operation, with confirmation level
+- [How to choose](docs/how-to-choose.en.md) and [Mountpoint and S3 Access Points](docs/mountpoint-vs-s3-access-points.en.md)
+- [Server-side copy and client tools](docs/server-side-copy.en.md)
+- [2026-11-24 real-environment record](benchmarks/records/2026-11-24-client-tools-stage3.en.md)
+- [AGENTS.md](AGENTS.md): conventions and verification steps for coding agents
