@@ -5,7 +5,7 @@
 - 種別 / Kind: Issue または PR / Issue or PR
 - 宛先 / Destination: Playbook（既定） または Serverless-Patterns（サーバーレス処理の実装に関する所見） / Playbook (default) or Serverless-Patterns (findings on the serverless implementation)
 - 状態 / Status: 下書き / 提出済み / 反映済み（Playbook のコミット） — draft / submitted / reflected (Playbook commit)
-- 関係する文書と節 / Related document and section: https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/<path>#<section>
+- 関係する文書と節 / Related document and section: https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/<path>#<section>
 
 ## 観測した事実 / Observed facts
 

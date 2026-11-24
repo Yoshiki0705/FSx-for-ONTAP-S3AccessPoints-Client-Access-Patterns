@@ -9,13 +9,13 @@
 
 ## 固定している値
 
-Playbook pinned commit: `038fef7fb6ad3c5d0fabae7580f4983343504c70`
+Playbook pinned commit: `a4c8367f9172ee88f0af25731752af63dc2c6225`
 Serverless-Patterns pinned tag: `v10.0.0-portal-line-icons-and-deps`
 Serverless-Patterns pinned commit: `7fe6ee62366aff0e7b944bc8eb719f872c95b477`
 
 | 項目 | 値 |
 |---|---|
-| Playbook の固定コミットの確認日 | 2026-11-22（日本時間）。`git ls-remote` で `main` の先頭と一致することを確認 |
+| Playbook の固定コミットの確認日 | 2026-11-25（日本時間）。`git ls-remote` で `main` の先頭と一致することを確認 |
 | Serverless-Patterns のタグの作成日 | 2026-11-11（`git tag --sort=-creatordate` で確認） |
 | Serverless-Patterns の固定を確認した日 | 2026-11-21（日本時間） |
 | 比較方法 | 文字列の一致のみ。版の大小では比較しない |
@@ -45,6 +45,7 @@ Issue の起票用リンク（`issues/new?template=...`）は文書ではない�
 |---|---|---|---|
 | 2026-11-21 | Serverless-Patterns | `v10.0.0-portal-line-icons-and-deps` | 初回の固定。比較対象の旧タグなし |
 | 2026-11-22 | Playbook | `038fef7fb6ad` | 初回の固定。比較対象の旧コミットなし。参照元の定義を Playbook 起点の 3 層へ変更した |
+| 2026-11-25 | Playbook | `a4c8367f9172` | `038fef7fb6ad` から更新。参照している 4 文書（`AGENTS.md`、`docs/agent/domain-knowledge.md`、制約ノート、`docs/ja/evidence-policy.md`）の差分を読んだ。移動・削除なし。リンクしている制約ノートの見出しは 1 つ変わり（対応表の節）、同一 Access Point 内に限ったコピーの節がバケットとの間のサーバー側コピーの節に置き換わった。リンク先のアンカー（`パターンごと成立しない-4-つの不在`）は存続。サイズ上限・ボリューム数上限の値に変更なし。互換性マトリクスの行を `stale` にする変更なし |
 
 ## English summary
 

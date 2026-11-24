@@ -10,7 +10,7 @@
 
 ## 前提
 
-S3 Access Points の前提と上限は [Playbook の S3 Access Points の制約ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) を参照してください。このページには書き写しません。ツールの版と出典は [ツールの事実確認](../../../docs/tool-facts.md) にあります。
+S3 Access Points の前提と上限は [Playbook の S3 Access Points の制約ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) を参照してください。このページには書き写しません。ツールの版と出典は [ツールの事実確認](../../../docs/tool-facts.md) にあります。
 
 ## 構成と流れ
 

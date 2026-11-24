@@ -25,7 +25,7 @@ On a real file system, check per case what AWS CLI, s5cmd, rclone and Mountpoint
 | IAM role and instance profile | `s3apbench-<datetime>-role`, `-profile` | `aws iam create-role` and others | `aws iam delete-role` and others |
 | EC2 client (c6in.xlarge) | Tag `Name=s3apbench-<datetime>` | `aws ec2 run-instances` | `aws ec2 terminate-instances` |
 
-The test volume is dedicated because a volume that had S3 Access Points attached cannot be deleted from ONTAP even after the access points are removed, and must be deleted through the FSx for ONTAP API ([Playbook constraints note](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md), Japanese). Nothing is attached to an existing volume, so existing configuration is unaffected.
+The test volume is dedicated because a volume that had S3 Access Points attached cannot be deleted from ONTAP even after the access points are removed, and must be deleted through the FSx for ONTAP API ([Playbook constraints note](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md), Japanese). Nothing is attached to an existing volume, so existing configuration is unaffected.
 
 ## Procedure
 

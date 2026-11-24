@@ -10,7 +10,7 @@
 
 | 論点 | 持つ場所 | 内容 |
 |---|---|---|
-| API の可否と制約（コピーの組み合わせ、暗号化は SSE-FSX、ストレージクラスは `FSX_ONTAP`、API 単位の実測） | Playbook | 制約ノートの該当節。固定コミットにその節が入るまで、このリポジトリからはリンクしない |
+| API の可否と制約（コピーの組み合わせ、暗号化は SSE-FSX、ストレージクラスは `FSX_ONTAP`、API 単位の実測） | Playbook | 制約ノートの[「バケットと別の Access Point の間のサーバー側のコピー」](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md#バケットと別の-access-point-の間のサーバー側のコピー) |
 | どのツールが、どの指定で、サーバー側コピーを発行するか | このリポジトリ | 下の表と段階 3 の確認手順 |
 | ファイルレベルとブロックレベルの汎用のコピー・移行ツール（DataSync、rsync、robocopy、XCP など）の実機確認 | Playbook の Issue（コピー・移行ツールの実機確認） | このリポジトリは扱わない |
 
@@ -43,4 +43,3 @@ benchmarks/scripts/stage3-measure.sh --dry-run --case server-side-copy
 
 - 各ツールが `CopyObject` と `UploadPartCopy` のどちらを、どの大きさで発行するか。
 - Playbook 側の API 単位の測定を、クライアントツールの結果として読めるかどうか。ツールごとの結果は、このリポジトリの段階 3 で測ります。
-- Playbook の該当節への参照。固定コミットにその節が入った後に、[docs/reference-pins.md](reference-pins.md) の追従手順でリンクを追加します。

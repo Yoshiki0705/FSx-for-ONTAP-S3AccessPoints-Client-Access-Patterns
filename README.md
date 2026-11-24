@@ -20,7 +20,7 @@ S3 Access Points の仕様、上限、選定に影響する FSx for ONTAP のコ
 
 ## 参照の固定
 
-Playbook へのリンクはコミット SHA に、Serverless-Patterns へのリンクはリリースタグに固定しています。値は [docs/reference-pins.md](docs/reference-pins.md) だけに書き、`make drift` が全リンクと照合します。仕様や上限を知りたいときは、まず Playbook の [S3 Access Points の制約ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) を読んでください。
+Playbook へのリンクはコミット SHA に、Serverless-Patterns へのリンクはリリースタグに固定しています。値は [docs/reference-pins.md](docs/reference-pins.md) だけに書き、`make drift` が全リンクと照合します。仕様や上限を知りたいときは、まず Playbook の [S3 Access Points の制約ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) を読んでください。
 
 ## 対象ツール
 

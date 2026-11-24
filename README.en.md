@@ -20,7 +20,7 @@ The relationship among the three repositories is shown in [docs/spoke-relations.
 
 ## Pinned references
 
-Links to the Playbook are pinned to a commit SHA, and links to Serverless-Patterns are pinned to a release tag. The values are written only in [docs/reference-pins.md](docs/reference-pins.md), and `make drift` checks every link against them. For specifications and limits, start with the Playbook [note on S3 Access Points constraints](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) (Japanese).
+Links to the Playbook are pinned to a commit SHA, and links to Serverless-Patterns are pinned to a release tag. The values are written only in [docs/reference-pins.md](docs/reference-pins.md), and `make drift` checks every link against them. For specifications and limits, start with the Playbook [note on S3 Access Points constraints](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) (Japanese).
 
 ## Target tools
 

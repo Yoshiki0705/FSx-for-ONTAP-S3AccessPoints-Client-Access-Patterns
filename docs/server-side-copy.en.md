@@ -10,7 +10,7 @@ In 2026-11, S3 Access Points made it possible to copy on the server side, with `
 
 | Topic | Where it lives | Content |
 |---|---|---|
-| Whether the API works, and its constraints (copy combinations, SSE-FSX encryption, the `FSX_ONTAP` storage class, per-API measurements) | Playbook | The matching section of the constraints note. This repository does not link to it until that section is in the pinned commit |
+| Whether the API works, and its constraints (copy combinations, SSE-FSX encryption, the `FSX_ONTAP` storage class, per-API measurements) | Playbook | The section ["Server-side copy between a bucket and another Access Point"](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md#バケットと別の-access-point-の間のサーバー側のコピー) of the constraints note (Japanese) |
 | Which tool issues a server-side copy, and with which arguments | This repository | The table below and the stage 3 verification steps |
 | Hands-on checks of general file-level and block-level copy and migration tools (DataSync, rsync, robocopy, XCP and others) | A Playbook issue (hands-on checks of copy and migration tools) | Not covered here |
 
@@ -43,4 +43,3 @@ benchmarks/scripts/stage3-measure.sh --dry-run --case server-side-copy
 
 - Whether each tool issues `CopyObject` or `UploadPartCopy`, and at what size.
 - Whether the Playbook's per-API measurements can be read as results for client tools. Per-tool results are measured in stage 3 of this repository.
-- A reference to the matching Playbook section. It is added with the follow-up procedure in [docs/reference-pins.md](reference-pins.md) once that section is in the pinned commit.

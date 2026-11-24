@@ -2,7 +2,7 @@
 
 クライアントツールが FSx for ONTAP の S3 Access Points に対して行う操作の確認状況です。実機で確認したセルは `M` で、記録へリンクしています。それ以外は `candidate`（未確認）です。数値はありません。
 
-> **読み方**: セルの先頭の記号が確認水準です。`C` は未確認、`D` は公式ドキュメントで確認（URL と確認日）、`M` は実行して確認（記録へのリンク）、`-` は対象外です。S3 Access Points 自体の上限は、このマトリクスに書かず [Playbook の S3 Access Points の制約ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/038fef7fb6ad3c5d0fabae7580f4983343504c70/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) を参照してください。
+> **読み方**: セルの先頭の記号が確認水準です。`C` は未確認、`D` は公式ドキュメントで確認（URL と確認日）、`M` は実行して確認（記録へのリンク）、`-` は対象外です。S3 Access Points 自体の上限は、このマトリクスに書かず [Playbook の S3 Access Points の制約ノート](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) を参照してください。
 
 ## 凡例
 
@@ -16,9 +16,9 @@
 
 | ツール | 一覧 | 取得 | 書き込み | マルチパート | 削除 | マウント時の挙動 | 確認日 | 固定した Playbook コミット | 出典 |
 |---|---|---|---|---|---|---|---|---|---|
-| AWS CLI 2.38.0 | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | - | 2026-11-24 | 038fef7fb6ad | [2026-11-24 の記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) |
-| rclone v1.76.0 | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | C | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | - | 2026-11-24 | 038fef7fb6ad | [2026-11-24 の記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) |
-| s5cmd v2.3.0 | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | C | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | - | 2026-11-24 | 038fef7fb6ad | [2026-11-24 の記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) |
+| AWS CLI 2.38.0 | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | - | 2026-11-24 | a4c8367f9172 | [2026-11-24 の記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) |
+| rclone v1.76.0 | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | C | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | - | 2026-11-24 | a4c8367f9172 | [2026-11-24 の記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) |
+| s5cmd v2.3.0 | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | C | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | - | 2026-11-24 | a4c8367f9172 | [2026-11-24 の記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) |
 | AWS Transfer Family（版は未確認） | C | C | C | C | C | - | - | - | - |
 | File Mover Express（版は未確認） | C | C | C | C | C | - | - | - | - |
 
@@ -26,7 +26,7 @@
 
 | ツール | 一覧 | 取得 | 書き込み | マルチパート | 削除 | マウント時の挙動 | 確認日 | 固定した Playbook コミット | 出典 |
 |---|---|---|---|---|---|---|---|---|---|
-| Mountpoint for Amazon S3 1.24.0 | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | 2026-11-24 | 038fef7fb6ad | [2026-11-24 の記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) |
+| Mountpoint for Amazon S3 1.24.0 | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | M [記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) | 2026-11-24 | a4c8367f9172 | [2026-11-24 の記録](../benchmarks/records/2026-11-24-client-tools-stage3.md) |
 | rclone mount（版は未確認） | C | C | C | C | C | C | - | - | - |
 | LucidLink Connect（版は未確認） | C | C | C | C | C | C | - | - | - |
 | LucidLink Suite（版は未確認） | C | C | C | C | C | C | - | - | - |
