@@ -22,12 +22,12 @@ Amazon FSx for NetApp ONTAP（以下 FSx for ONTAP）の S3 Access Points は、
 | Amazon Redshift と Amazon OpenSearch Service | AWS サービス | E1: 分析とログ分析 | 公式の想定（NetApp のブログの例示。AWS の文書 U6 には記載なし） | なし | U10 |
 | AWS Lambda | AWS サービス | N7、E3: ファイル投入の処理、共有データの読み取り | 公式の想定 | AWS CLI（動作確認） | U6、U5 |
 | Amazon CloudFront | AWS サービス | N6: HLS 動画の配信 | 公式の想定 | なし | U6 |
-| AWS Transfer Family | AWS サービス | N4: 外部との SFTP、FTPS、FTP の受け渡し。前提は ONTAP 9.17.1 以降、エイリアスのみ、リネームと追記は未対応、ネットワーク起点が VPC の Access Point は拒否される（U9）。本検証の構成はそのままは使えない | 公式の想定 | なし（相手の SFTP クライアントは Transfer Family の文書の範囲） | U6、U9 |
+| AWS Transfer Family | AWS サービス | N4: 外部との SFTP、FTPS、FTP の受け渡し。前提は ONTAP 9.17.1 以降、エイリアスのみ、リネームと追記は未対応、ネットワーク起点が VPC の Access Point は拒否される（U9。Snowflake も同じ型の制約、U13）。本検証の構成はそのままは使えない | 公式の想定 | なし（相手の SFTP クライアントは Transfer Family の文書の範囲） | U6、U9 |
 | Amazon S3 の汎用バケット | AWS サービス | N5、E4a、E4b: サーバー側コピー（`CopyObject`、`UploadPartCopy`） | 公式の想定。バケット→ボリュームは本検証で測定 | AWS CLI、s5cmd、rclone（ボリューム→バケットは本検証で未測定） | U8、Playbook、記録 |
 | S3 Batch Operations | AWS サービス | E4a、E4b: 大量のコピーのジョブ | 公式の想定に加えて、[Playbook の記録](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-points-server-side-copy-use-cases.md) | なし（本検証では未実行） | Playbook |
-| Dremio Cloud | 外部製品 | E8: Access Point を読み、結果を FSx for ONTAP の S3 バケットへ書く | 公式の想定（Dremio と NetApp のブログ） | なし | U11、U12 |
-| Snowflake | 外部製品 | E8: ステージに `AWS_ACCESS_POINT_ARN` を指定した外部テーブル。検証 2026-05（Standard edition、ap-northeast-1、ONTAP 9.17.1）。2026-09 に周辺の記述が訂正され、中心の発見（指定がないと LIST は通り SELECT は失敗、指定すると読める）は不変。記事は、Snowflake が公式の対応構成としているわけではないと書く | 公開事例（著者の 1 環境） | なし | U13 |
-| Databricks | 外部製品 | E8: Instance Profile と boto3 による直接の読み取りは通ったが、Unity Catalog のガバナンスの外（PoC 向け）。Unity Catalog の External Location は、著者の追記（2026-05-26）が、`access_point` フィールドは一般提供でなく文書から削除されており、部分的な成功は非対応の副作用と読むのが妥当、と書く（検証 2026-05、訂正 2026-09） | 公開事例（著者の 1 環境） | なし | U14 |
+| Dremio Cloud | 外部製品 | E8a: 読み取りと、結果の書き戻し | 公式の想定（NetApp と、ほぼ同じ内容の Dremio 自身のブログ） | なし | U11、U12 |
+| Snowflake | 外部製品 | E8b: 外部テーブル。検証 2026-05、読めた。条件は [use-cases の注 E8-b](use-cases.md) | 公開事例（著者の記事、1 環境） | なし | U13 |
+| Databricks | 外部製品 | E8c: 検証 2026-05、一部だけ読めた。条件は [use-cases の注 E8-c](use-cases.md) | 公開事例（著者の記事、1 環境） | なし | U14 |
 | ファイルパスとして使うアプリ | アプリ | N8: S3 API を使えないアプリへのファイルパスの提供 | 推定。マウントと基本操作は確認 | Mountpoint for Amazon S3 | 記録 |
 | 商用の転送・ストリーミング製品 | 外部製品 | E9: File Mover Express、LucidLink Connect、LucidLink Suite | 推定 | 商用ツール（手動チェックリスト） | tool-facts |
 

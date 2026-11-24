@@ -157,7 +157,7 @@ LABELS: dict[str, dict[str, str]] = {
     "s3": {"ja": "Amazon S3<br>(汎用バケット)", "en": "Amazon S3<br>(general purpose bucket)"},
     "frame_services": {
         "ja": "S3 API で読む AWS サービス（想定）※3",
-        "en": "AWS services that read the S3 API (expected) *3",
+        "en": "AWS services (expected) *3",
     },
     "athena": {"ja": "Amazon Athena<br>(SQL)", "en": "Amazon Athena<br>(SQL)"},
     "bedrock": {"ja": "Amazon Bedrock<br>(Knowledge Bases)", "en": "Amazon Bedrock<br>(Knowledge Bases)"},
@@ -315,7 +315,7 @@ def _overview() -> Diagram:
             Rect("tool_mp", "box", "tool_mp", 745, 216, 205, 38),
             Rect("frame_bucket", "frame", "frame_bucket", 590, 340, 370, 200),
             Rect("frame_services", "frame", "frame_services", 590, 570, 370, 310),
-            Rect("notes", "note", "notes", 30, 340, 440, 380),
+            Rect("notes", "note", "notes", 30, 340, 440, 370),
         ),
         nodes=(
             Node("fsx", "fsx_ontap", "fsx", 140, 140),
