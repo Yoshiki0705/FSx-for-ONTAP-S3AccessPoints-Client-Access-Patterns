@@ -15,7 +15,8 @@ tags = ["internal", "network"]
 
 [rules.allowlist]
 # The gate tests contain deliberately bad sample addresses (marked allow:safety).
-paths = ['''scripts/tests/''']
+# The generated diagrams embed icons as base64, whose digit runs can look like an address.
+paths = ['''scripts/tests/''', '''docs/diagrams/''', '''docs/images/''']
 
 [[rules]]
 id = "aws-arn-account-id"

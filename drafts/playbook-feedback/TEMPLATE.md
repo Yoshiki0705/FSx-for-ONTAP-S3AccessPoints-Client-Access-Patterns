@@ -1,6 +1,6 @@
 # Playbook フィードバック下書き / Playbook feedback draft
 
-> 提出は利用者の承認後です。顧客名、アカウント ID、リソース ID、実際のアクセスポイント別名を書きません。 / Submit only after the user approves. Do not write customer names, account IDs, resource IDs, or real access point aliases.
+> 提出は利用者の承認後です。組織名、アカウント ID、リソース ID、実際のアクセスポイント別名を書きません。 / Submit only after the user approves. Do not write organization names, account IDs, resource IDs, or real access point aliases.
 
 - 種別 / Kind: Issue または PR / Issue or PR
 - 宛先 / Destination: Playbook（既定） または Serverless-Patterns（サーバーレス処理の実装に関する所見） / Playbook (default) or Serverless-Patterns (findings on the serverless implementation)
@@ -25,5 +25,5 @@
 
 ## 公開安全の確認 / Public safety check
 
-- [ ] 顧客名、個人名、アカウント ID、リソース ID、別名、ケース番号を含まない / No customer or personal names, account IDs, resource IDs, aliases, or case numbers
+- [ ] 組織名、個人名、アカウント ID、リソース ID、別名、ケース番号を含まない / No organization or personal names, account IDs, resource IDs, aliases, or case numbers
 - [ ] `make drift` が通る / `make drift` passes

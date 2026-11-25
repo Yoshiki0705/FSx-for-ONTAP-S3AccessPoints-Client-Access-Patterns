@@ -33,6 +33,7 @@ TEXT_SUFFIXES = {
     ".tsv",
     ".ini",
     ".svg",
+    ".drawio",
 }
 TEXT_NAMES = {"Makefile", "LICENSE", ".gitignore", ".gitkeep", "CODEOWNERS"}
 BINARY_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif", ".pdf", ".ico", ".pyc"}

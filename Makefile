@@ -16,13 +16,17 @@ lint: ## Markdown structure, ruff (if installed), shellcheck (if installed)
 	@if command -v ruff >/dev/null 2>&1; then ruff check . && ruff format --check .; else echo "ruff: not installed (skipped; make install)"; fi
 	@if command -v shellcheck >/dev/null 2>&1; then find . -name '*.sh' -not -path './.git/*' -not -path './.kiro/specs/*' -exec shellcheck {} +; else echo "shellcheck: not installed (skipped)"; fi
 
-drift: ## pins, naming, public safety, ja/en parity, matrix, make targets
+drift: ## pins, naming, public safety, ja/en parity, matrix, make targets, diagram fonts and flow
 	$(PYTHON) $(SCRIPTS)/check_pins.py
 	$(PYTHON) $(SCRIPTS)/check_naming.py
 	$(PYTHON) $(SCRIPTS)/check_public_safety.py
 	$(PYTHON) $(SCRIPTS)/check_parity.py
 	$(PYTHON) $(SCRIPTS)/check_matrix.py
 	$(PYTHON) $(SCRIPTS)/check_make_targets.py
+	$(PYTHON) $(SCRIPTS)/check_diagram_fonts.py --selftest >/dev/null
+	$(PYTHON) $(SCRIPTS)/check_diagram_fonts.py
+	$(PYTHON) $(SCRIPTS)/check_diagram_flow.py --selftest >/dev/null
+	$(PYTHON) $(SCRIPTS)/check_diagram_flow.py
 
 drift-pins: ## Manual, needs network: pinned refs exist and match the recorded commits
 	$(PYTHON) $(SCRIPTS)/check_pins_exist.py

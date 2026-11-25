@@ -7,3 +7,6 @@ select = ["E", "F", "I", "UP", "B"]
 [lint.per-file-ignores]
 # Tests import helpers first, because helpers puts scripts/ on sys.path.
 "scripts/tests/*" = ["E402", "I001", "E501"]
+# Long literals: the icon path table and a diagnostic f-string in the checker copied between repositories.
+"scripts/build_diagrams.py" = ["E501"]
+"scripts/check_diagram_flow.py" = ["E501"]

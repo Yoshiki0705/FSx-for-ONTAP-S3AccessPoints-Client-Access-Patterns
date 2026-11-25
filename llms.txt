@@ -1,0 +1,37 @@
+# FSx for ONTAP S3 Access Points Client Access Patterns
+
+> A repository under the Amazon FSx for NetApp ONTAP Adoption Playbook. It records how client tools (AWS CLI, s5cmd, rclone, Mountpoint for Amazon S3, and commercial transfer products) behave against S3 Access Points attached to FSx for ONTAP volumes. It holds use cases, an integration map, a compatibility matrix, checklists, and one dated record from a real environment. It does not copy specifications or limits; the Playbook holds them.
+
+How to read the confidence marks. There are two separate systems. Do not mix them.
+
+- The compatibility matrix uses `M` (run and recorded, with a link), `D` (read in official documentation, with URL and date), and `C` (unconfirmed, no numbers). The definition is in [confirmation-levels](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns/blob/main/docs/agent/confirmation-levels.md).
+- The use cases and the integration map use three evidence classes: public case, official expectation, and estimate. An official expectation or an estimate must not be quoted as "works". Their "related operations run" column names operations that were run, not a test of the use case.
+
+Numbers mean something only with the environment stated next to them. The one record is one configuration, one run per operation, no performance numbers.
+
+## Start here
+
+- [README (English)](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns/blob/main/README.en.md): scope and reading order. Japanese original: [README.md](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns/blob/main/README.md)
+- [AGENTS.md](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns/blob/main/AGENTS.md): conventions and verification steps for coding agents (Japanese)
+
+## Documents
+
+- [Use cases](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns/blob/main/docs/use-cases.en.md): on-premises ONTAP S3, and expected use by new and existing FSx for ONTAP users. Japanese: [use-cases.md](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns/blob/main/docs/use-cases.md)
+- [Integration map](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns/blob/main/docs/integrations-map.en.md): AWS services and products against use cases, and which client tool is involved. Japanese: [integrations-map.md](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns/blob/main/docs/integrations-map.md)
+- [Compatibility matrix](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns/blob/main/docs/compatibility-matrix.en.md): per tool and operation, with confidence mark
+- [Tool facts](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns/blob/main/docs/tool-facts.en.md): versions and how each tool names an access point, from official documents
+- [How to choose](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns/blob/main/docs/how-to-choose.en.md): choosing a client tool by purpose, with constraints listed for every option
+- [Mountpoint and S3 Access Points](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns/blob/main/docs/mountpoint-vs-s3-access-points.en.md): three paths compared on the same axes
+- [Server-side copy and client tools](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns/blob/main/docs/server-side-copy.en.md): which tool issues which copy API
+- [Reference pins](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns/blob/main/docs/reference-pins.md): the pinned Playbook commit and Serverless-Patterns tag (Japanese)
+
+## Records
+
+- [2026-11-24 real-environment record](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns/blob/main/benchmarks/records/2026-11-24-client-tools-stage3.en.md): four tools, one configuration, one run per operation
+- [Stage 3 runbook](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns/blob/main/benchmarks/stage3-runbook.en.md): how to repeat the record. Dry run by default; real runs need cost approval
+
+## Optional
+
+- [Patterns](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns/tree/main/patterns): per-tool setup pages (ingest, streaming, MCP clients)
+- [Vendor checklists](https://github.com/Yoshiki0705/FSx-for-ONTAP-S3AccessPoints-Client-Access-Patterns/tree/main/checklists/vendor): manual checklists for commercial tools, filled in by the user
+- [Playbook](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook): specifications and limits of S3 Access Points. A question of the form "what is the limit on X" is answered there

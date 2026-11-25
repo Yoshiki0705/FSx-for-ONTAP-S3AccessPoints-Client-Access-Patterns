@@ -4,7 +4,23 @@
 
 This repository collects setup steps, confirmation results, and selection guidance for using Amazon FSx for NetApp ONTAP (FSx for ONTAP) S3 Access Points from client tools on your own machines and servers.
 
-> **Current state**: scaffold only. Every cell of the compatibility matrix is `candidate` (unconfirmed) and carries no numbers. Items move to `documented` or `measured` as they are confirmed.
+> **Current state**: This is one configuration and one run per operation on real hardware. Four tools (AWS CLI, s5cmd, rclone, Mountpoint for Amazon S3) were checked on 2026-11-24 ([record](benchmarks/records/2026-11-24-client-tools-stage3.en.md)). There are no performance numbers. Commercial tools and rclone mount remain `candidate` (unconfirmed).
+
+![Four client tools on Amazon EC2 use an Amazon FSx for NetApp ONTAP volume over the S3 API through S3 Access Points, connect to an Amazon S3 general purpose bucket by server-side copy (only the bucket-to-volume direction was measured), and Amazon Athena, Amazon Bedrock, AWS Lambda, and AWS Transfer Family read over the S3 API](docs/images/s3ap-client-access-overview-en.svg)
+
+Figure 1: How the client tools, S3 Access Points, the volume, the bucket, and the downstream AWS services relate. The services at the lower right are expectations from documents and were not checked on real hardware.
+
+## Where to start
+
+| What you want to know | Read |
+|---|---|
+| Where this is used (on-premises ONTAP, new and existing FSx for ONTAP users) | [docs/use-cases.en.md](docs/use-cases.en.md) |
+| Which AWS services and products connect, and which client tools are involved | [docs/integrations-map.en.md](docs/integrations-map.en.md) |
+| Confirmation status per tool | [docs/compatibility-matrix.en.md](docs/compatibility-matrix.en.md) |
+| How to choose from use case and requirements | [docs/how-to-choose.en.md](docs/how-to-choose.en.md) |
+| Server-side copy between a bucket and a volume | [docs/server-side-copy.en.md](docs/server-side-copy.en.md) |
+
+Indexes for AI agents are [llms.txt](llms.txt) and [AGENTS.md](AGENTS.md).
 
 ## Role of this repository
 
