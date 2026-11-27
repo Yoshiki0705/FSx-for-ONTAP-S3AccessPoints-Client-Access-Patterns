@@ -6,7 +6,7 @@ This repository collects setup steps, confirmation results, and selection guidan
 
 > **Current state**: This is one configuration and one run per operation on real hardware. Four tools (AWS CLI, s5cmd, rclone, Mountpoint for Amazon S3) were checked on 2026-11-24 ([record](benchmarks/records/2026-11-24-client-tools-stage3.en.md)). There are no performance numbers. Commercial tools and rclone mount remain `candidate` (unconfirmed).
 
-![Four client tools on Amazon EC2 use an Amazon FSx for NetApp ONTAP volume over the S3 API through S3 Access Points, connect to an Amazon S3 general purpose bucket by server-side copy (only the bucket-to-volume direction was measured), and Amazon Athena, Amazon Bedrock, AWS Lambda, and AWS Transfer Family read over the S3 API](docs/images/s3ap-client-access-overview-en.svg)
+![Four client tools on Amazon EC2 use an Amazon FSx for NetApp ONTAP volume over the S3 API through S3 Access Points, connect to an Amazon S3 general purpose bucket by server-side copy (measured in both directions, bucket and volume), and Amazon Athena, Amazon Bedrock, AWS Lambda, and AWS Transfer Family read over the S3 API](docs/images/s3ap-client-access-overview-en.svg)
 
 Figure 1: How the client tools, S3 Access Points, the volume, the bucket, and the downstream AWS services relate. The services at the lower right are expectations from documents and were not checked on real hardware.
 
