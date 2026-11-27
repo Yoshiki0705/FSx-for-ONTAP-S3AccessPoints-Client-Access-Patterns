@@ -18,8 +18,8 @@ BENCH = SCRIPTS.parent / "benchmarks"
 SCRIPT_DIR = BENCH / "scripts"
 
 
-# Every test runs with stub cloud CLIs first on PATH. A test that reached a real `aws` once created a
-# bucket in a real account, so any call that escapes the dry run now fails and leaves a marker.
+# Every test runs with stub cloud CLIs first on PATH, so any call that escapes the dry run fails and
+# leaves a marker instead of reaching a real account.
 STUB_DIR = Path(tempfile.mkdtemp())
 CALLED = STUB_DIR / "called"
 for tool in ("aws", "s5cmd", "rclone", "mount-s3", "umount", "openssl"):

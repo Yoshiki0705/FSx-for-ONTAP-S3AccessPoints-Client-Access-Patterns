@@ -41,12 +41,3 @@ There are three ways to reach FSx for ONTAP data. This page lines up the constra
 ## Results of the 2026-11-24 run
 
 Paths a and b were each checked once on a real file system on 2026-11-24 ([2026-11-24 record](../benchmarks/records/2026-11-24-client-tools-stage3.en.md)). Mountpoint for Amazon S3 mounted the FSx for ONTAP access point by both alias and ARN. New writes, reads, overwrite and delete (with the flags), rename and append gave the same results as a mount of an ordinary bucket in the same run. Path c (NFS) was not checked.
-
-## What is not confirmed
-
-1. Results over multiple runs, with other Mountpoint versions, and on an NTFS security style volume.
-2. How real directories in the volume appear, as Mountpoint directories and as S3 prefixes.
-3. Whether the owner and permissions of FSx for ONTAP files show up as S3 metadata or as Mountpoint file attributes.
-4. How changes appear when a and c are used on the same volume at the same time (including the cache time-to-live).
-
-Stage 3 checks these with controls. The steps are in the Mountpoint section of the [stage 3 runbook](../benchmarks/stage3-runbook.en.md).

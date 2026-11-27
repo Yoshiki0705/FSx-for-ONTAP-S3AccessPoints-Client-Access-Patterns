@@ -101,11 +101,3 @@ The estimate uses the ap-northeast-1 unit prices read on 2026-11-24 from the Pri
 | Total |  |  | about 1.2 |
 
 > **Assumptions and exclusions**: Same-Region data transfer with S3 is what the S3 pricing page lists as not charged. The existing FSx for ONTAP (1,024 GiB SSD, 128 MBps, single AZ) costs 0.15 USD/GB-month and 0.906 USD/MBps-month (about 0.37 USD/hour) and is already running, so it is not an increment. The FSx for ONTAP pricing page lists only S3 requests and data transfer for S3 Access Points. Even if the time doubles (8 hours) the total is about 2.4 USD, far from the 20 USD cap.
-
-## What is not confirmed
-
-- Whether `s3:DeleteAccessPoint` is needed to delete the access point. If it is, a permission error shows it at run time and the operator role is extended.
-- Whether the Session Manager plugin is installed on the operator machine.
-- Whether the Mountpoint version installed by `dnf` is the latest (1.25.0). It is recorded in `versions.txt` at run time.
-- That the test SVM has no ONTAP object store server. If it has one, creating the access point fails (Playbook).
-- A CloudTrail data-event check of `CopyObject`. The scripts do not include it; add it by hand after approval if needed.

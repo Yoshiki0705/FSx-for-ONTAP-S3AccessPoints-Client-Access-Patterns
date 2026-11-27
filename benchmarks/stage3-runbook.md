@@ -101,11 +101,3 @@ benchmarks/scripts/stage3-teardown.sh --execute
 | 合計 |  |  | 約 1.2 |
 
 > **前提と除外**: 同一リージョンの S3 とのデータ転送は、S3 の料金ページで課金の対象外と読んだ範囲です。既存の FSx for ONTAP（1,024 GiB の SSD、128 MBps、単一 AZ）は 0.15 USD/GB-月と 0.906 USD/MBps-月（約 0.37 USD/時間）で、既に稼働中なので増分ではありません。S3 Access Points 自体の課金は、FSx for ONTAP の料金ページに S3 リクエストとデータ転送だけが載っています。時間が 2 倍（8 時間）になっても約 2.4 USD で、上限の 20 USD に届きません。
-
-## 確認できていないこと
-
-- `s3:DeleteAccessPoint` が、アクセスポイントの削除に必要かどうか。必要なら、実行時に権限エラーで分かり、操作者のロールで補います。
-- Session Manager のプラグインが操作者の端末にあるか。
-- Mountpoint の、`dnf` で入る版が最新（1.25.0）か。実行時に `versions.txt` で記録します。
-- 検証用 SVM に ONTAP のオブジェクトストアサーバーがないこと。あると、アクセスポイントの作成が失敗します（Playbook）。
-- CloudTrail のデータイベントによる `CopyObject` の確認。スクリプトには含めていないので、必要なら承認を得て手で追加します。

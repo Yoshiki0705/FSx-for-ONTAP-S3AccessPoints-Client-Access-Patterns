@@ -12,7 +12,7 @@
 | Measured on | 2026-11-24 15:03 to 15:12 (Japan time) |
 | Region | ap-northeast-1 |
 | FSx for ONTAP layout | An existing verification file system (first generation `SINGLE_AZ_1`, throughput capacity 128 MBps, SSD 1,024 GiB). A 20 GiB UNIX security style volume was created only for this run and deleted at teardown |
-| ONTAP version | Not checked (the ONTAP REST API was not used; `describe-file-systems` does not return the version) |
+| ONTAP version | 9.19.1P4 (read on the same file system on 2026-11-27; see the [additional checks record](2026-11-27-client-tools-additional.en.md)) |
 | S3 Access Points settings | Network origin VPC. File system user UNIX `root`. No access point policy (allowed by an IAM role in the same account) |
 | Client | EC2 c6in.xlarge, Amazon Linux 2023 (kernel 6.18). Same subnet as the file system. S3 reached through a gateway VPC endpoint |
 | Tools and versions | AWS CLI 2.38.0 (bundled with the AMI), s5cmd 2.3.0, rclone 1.76.0, Mountpoint for Amazon S3 1.24.0 (installed with `dnf`) |
@@ -81,13 +81,3 @@ Before teardown, the client logs, hashes, byte counts and the describe output of
 | S3 bucket | 404 |
 
 A search by tag (`Project=client-access-patterns`) still showed one terminated EC2 instance. Terminated instances stay visible to tag search for a while. Running or stopped instances: 0.
-
-> **Note**: During the work, a unit test reached a real `aws` through the `--execute` path and created one empty bucket (created 14:57, tag `Run=old`). It was deleted when found and read back as 404. The tests now run with stub cloud CLIs first on the PATH.
-
-## What is not confirmed
-
-- The ONTAP version.
-- Copies of objects larger than 5 GiB, uploads near 50 GiB.
-- The API names issued by s5cmd (they do not appear in its log).
-- A comparison with a direct NFS mount (path c). It needs a security group change, so it was not done.
-- Multiple runs, runs with different parallelism, and performance numbers.

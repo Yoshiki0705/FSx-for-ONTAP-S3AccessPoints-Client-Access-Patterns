@@ -38,8 +38,3 @@
 ```bash
 benchmarks/scripts/stage3-measure.sh --dry-run --case server-side-copy
 ```
-
-## 確認できていないこと
-
-- 各ツールが `CopyObject` と `UploadPartCopy` のどちらを、どの大きさで発行するか。
-- Playbook 側の API 単位の測定を、クライアントツールの結果として読めるかどうか。ツールごとの結果は、このリポジトリの段階 3 で測ります。

@@ -60,7 +60,7 @@ People starting out face a first choice about where the data lives: keep the vol
 | E2 | S3 use of data moved from on-premises ONTAP | Connect S3 readers through an access point to data moved to FSx for ONTAP with SnapMirror | Official expectation (two blogs, from NetApp and Dremio, with nearly the same content) | None | None | U10, U11, U12 |
 | E3 | Serverless and container apps read shared data | Read configuration files, reference data, content, and model files through the S3 API | Official expectation | No | AWS CLI | U5 |
 | E4a | Server-side copy from bucket to volume | Load bucket data into the volume (for example from a partner's bucket) | Official expectation (U8) | Bucket-to-volume copy (3 tools) | AWS CLI, s5cmd, rclone | U8, Record |
-| E4b | Server-side copy from volume to bucket | Move to an archive storage class, use bucket features (lifecycle, event notifications), or export to another team's bucket. The archive, lifecycle, and event notification examples are in the Playbook note, not in U8 | Official expectation (U8 for the copy itself; the Playbook [note](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-points-server-side-copy-use-cases.md) (Japanese) for the uses) | Not measured in this check. The Playbook has a measurement record | None (client tool behavior not confirmed) | U8, Playbook |
+| E4b | Server-side copy from volume to bucket | Move to an archive storage class, use bucket features (lifecycle, event notifications), or export to another team's bucket. The archive, lifecycle, and event notification examples are in the Playbook note, not in U8 | Official expectation (U8 for the copy itself; the Playbook [note](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-points-server-side-copy-use-cases.md) (Japanese) for the uses) | Volume to bucket copy (four copy methods, 2026-11-27). The Playbook also has a measurement record | AWS CLI, s5cmd, rclone (rclone needs `--s3-storage-class STANDARD`) | U8, record, Playbook |
 | E5 | Backup, sync, and ingest from scheduled jobs | A cron or scheduled job syncs volume files with a bucket or other storage. The access point does not support S3 event notifications, so detecting updates means running on a schedule (U15, U13). An ingest path that synthesizes notifications can report healthy while notifications are dropped, so monitor it by comparing object counts with loaded rows (U13, the author's one environment) | Estimate | List, get, put, delete (once each). Scheduled runs not measured | AWS CLI, s5cmd, rclone | Record |
 | E6 | Parallel transfer of many files | Transfer many files in parallel | Estimate | Get and put of one file at a time. Parallel transfer not measured | s5cmd, AWS CLI | Record |
 | E7 | Sync with other clouds and storage | rclone syncs between multiple backends | Estimate | rclone list, get, put, delete (one backend only) | rclone | Record |
@@ -71,8 +71,8 @@ People starting out face a first choice about where the data lives: keep the vol
 The three E8 rows follow the same order of items: when and where it was checked, what worked, what did not, and how each vendor's own documentation treats it. The classes differ by the kind of public evidence, not by product merit.
 
 - Note E8-a (Dremio): no validation is described. The blogs describe reading and writing results back to an FSx for ONTAP S3 bucket as an architecture. How each vendor's documentation treats it was not confirmed (U11, U12).
-- Note E8-b (Snowflake): checked 2026-05 (Standard edition, ap-northeast-1, ONTAP 9.17.1). Reads worked when the stage set `AWS_ACCESS_POINT_ARN`; without it LIST worked and SELECT failed. Surrounding claims were corrected in 2026-09 and this central finding did not change. The access point checked had an internet network origin; a Snowflake SaaS cannot use an access point with a VPC origin (U13). The article itself says Snowflake does not document this as a supported configuration.
-- Note E8-c (Databricks): checked 2026-05 (DBR 17.3 LTS, ap-northeast-1), corrected 2026-09. Direct reads with an instance profile and boto3 worked only on a Dedicated cluster inside a Databricks customer-managed VPC (Databricks' term) that is the same VPC as the file system; in a Databricks-managed VPC with VPC peering it timed out on read. Only the driver node was checked; Spark executors were not. This path sits outside Unity Catalog governance (PoC use). For a Unity Catalog external location, the author's 2026-05-26 addendum says the `access_point` field was never generally available and was removed from the documentation, and that the partial success is best read as an unsupported side effect. The staging path that the top of U14 recommends (using FPolicy) cannot be used, because FPolicy does not see writes through S3 Access Points (the 2026-09 correction in U13). How Databricks' own documentation treats it was not confirmed.
+- Note E8-b (Snowflake): checked 2026-05 (Standard edition, ap-northeast-1, ONTAP 9.17.1). Reads worked when the stage set `AWS_ACCESS_POINT_ARN`; without it LIST worked and SELECT failed. The access point checked had an internet network origin; a Snowflake SaaS cannot use an access point with a VPC origin (U13). The article itself says Snowflake does not document this as a supported configuration.
+- Note E8-c (Databricks): checked 2026-05 (DBR 17.3 LTS, ap-northeast-1). Direct reads with an instance profile and boto3 worked only on a Dedicated cluster inside a Databricks customer-managed VPC (Databricks' term) that is the same VPC as the file system; in a Databricks-managed VPC with VPC peering it timed out on read. Only the driver node was checked; Spark executors were not. This path sits outside Unity Catalog governance (PoC use). For a Unity Catalog external location, the author's 2026-05-26 addendum says the `access_point` field was never generally available and was removed from the documentation, and that the partial success is best read as an unsupported side effect. The staging path that the top of U14 recommends (using FPolicy) cannot be used, because FPolicy does not see writes through S3 Access Points (the 2026-09 correction in U13). How Databricks' own documentation treats it was not confirmed.
 - Reading through an external product can change where data is processed and stored. For example, Snowflake COPY INTO makes a copy in Snowflake-managed storage, and Cortex cross-region inference can route data to another Region (U13). An official expectation is not a basis for procurement.
 
 | E9 | Commercial file transfer and streaming products | File Mover Express, LucidLink Connect, and LucidLink Suite use the access point | Estimate | No (the checklist is filled in by the user) | Commercial tools | tool-facts |
@@ -113,24 +113,6 @@ You choose a network origin when you create an access point. The two options eac
 | VPC | Clients inside your own VPC use it | Services that call from outside your VPC (Snowflake, AWS Transfer Family) cannot use an access point with this origin (U13, U9) | Confirmed (used inside the VPC from the EC2 instance in this check) |
 | Internet | Services that call from outside your VPC use it | It is not a public entry point; IAM, the access point policy, and the file system user's permissions are the controls. U9 says the traffic stays on the AWS backbone. Choose a least-privilege user, not root | Documented (U9, U13). Not confirmed in this check |
 
-## What is not confirmed
-
-- Published cases of S3 NAS buckets on on-premises ONTAP. The 2026-11-25 search found none.
-- Performance, cost, and operational load of each use case in the tables. This repository did not measure them.
-- That AWS services and external data platforms can read an FSx for ONTAP access point. This rests on AWS documents and articles and was not checked on real hardware.
-- Behavior of the three commercial tools.
-- How client tools behave for server-side copy from volume to bucket (this check ran only the other direction).
-- Behavior and retries when a server-side copy fails midway.
-- Volumes with the NTFS security style (SMB). This check used only the UNIX security style.
-- How a file still being written, or locked over SMB, appears to an S3 reader.
-- How access through an access point is recorded in audit logs. The Playbook [constraints note](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) (Japanese) covers it, but this check did not confirm it.
-- The effect of attaching an access point on existing NFS and SMB workloads (shared throughput capacity).
-- Which file formats Athena reads, partitioning, and behavior with many small files.
-- Pitfalls of storage class and encryption specifications in server-side copy. AWS's compatibility list says that when the destination is an FSx for ONTAP access point, any server-side encryption other than SSE-FSX returns a 400 (U15). The Playbook has a measurement record. This check did not measure it.
-- Integration targets not in the tables. Absence from a table does not mean unsupported.
-- The Snowflake and Databricks configurations are the author's validation articles, one environment each. The NetApp blog (U10) says Snowflake and Databricks can be connected, but this page does not confirm it in either vendor's own documentation as a supported configuration.
-- Only documents whose body was opened and read are listed as sources.
-
 ## Source list
 
 All sources were read on 2026-11-25 (Japan time).
@@ -150,7 +132,13 @@ All sources were read on 2026-11-25 (Japan time).
 | U11 | NetApp blog: Unlock AI insights with ONTAP and S3 access points | https://www.netapp.com/blog/ai-insights-ontap-s3-access-points-dremio/ |
 | U12 | Dremio blog: From file systems to AI insights | https://www.dremio.com/blog/from-file-systems-to-ai-insights-dremio-cloud-amazon-fsx-for-netapp-ontap/ |
 | U13 | The author's validation article: Snowflake and S3 Access Points | https://dev.to/aws-builders/snowflake-and-fsx-for-ontap-s3-access-points-from-access-denied-to-working-external-tables-9k8 |
-| U14 | The author's validation article: Databricks and S3 Access Points (includes the 2026-05 check, the 2026-05-26 addendum, and the 2026-09 correction) | https://dev.to/aws-builders/databricks-and-fsx-for-ontap-s3-access-points-a-layer-by-layer-validation-of-observed-boundaries-p4d |
+| U14 | The author's validation article: Databricks and S3 Access Points (includes the 2026-05 check and the 2026-05-26 addendum) | https://dev.to/aws-builders/databricks-and-fsx-for-ontap-s3-access-points-a-layer-by-layer-validation-of-observed-boundaries-p4d |
 | U15 | FSx for ONTAP User Guide: Access point compatibility | https://docs.aws.amazon.com/fsx/latest/ONTAPGuide/access-points-for-fsxn-object-api-support.html |
 | Record | This repository's 2026-11-24 real-environment check | [2026-11-24-client-tools-stage3.en.md](../benchmarks/records/2026-11-24-client-tools-stage3.en.md) |
 | tool-facts | This repository's tool fact check | [tool-facts.en.md](tool-facts.en.md) |
+
+## Premises for reading
+
+- A system that is not in the table is not necessarily unsupported.
+- The Snowflake and Databricks setups come from the author's validation posts on one environment each. This table does not cover whether each vendor's own documentation lists an FSx for ONTAP access point as a supported configuration.
+- The sources list only documents that were opened and read.
