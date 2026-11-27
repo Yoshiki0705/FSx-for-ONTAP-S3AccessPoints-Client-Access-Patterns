@@ -6,7 +6,7 @@ Amazon FSx for NetApp ONTAP（以下 FSx for ONTAP）の S3 Access Points を、
 
 > **現在の状態**: 1 構成・各操作 1 回の実機確認です。4 つのツール（AWS CLI、s5cmd、rclone、Mountpoint for Amazon S3）を 2026-11-24 に確かめました（[記録](benchmarks/records/2026-11-24-client-tools-stage3.md)）。性能の数値はありません。商用ツールと rclone mount は未確認（`candidate`）のままです。
 
-![Amazon EC2 上の 4 つのクライアントツールが、S3 Access Points を通して Amazon FSx for NetApp ONTAP のボリュームを S3 API で使い、Amazon S3 の汎用バケットとサーバー側コピーでつながり（測ったのはバケットからボリュームへの向きだけ）、Amazon Athena、Amazon Bedrock、AWS Lambda、AWS Transfer Family が S3 API で読む構成の図](docs/images/s3ap-client-access-overview.svg)
+![Amazon EC2 上の 4 つのクライアントツールが、S3 Access Points を通して Amazon FSx for NetApp ONTAP のボリュームを S3 API で使い、Amazon S3 の汎用バケットとサーバー側コピーでつながり（バケットとボリュームの両方向で測った）、Amazon Athena、Amazon Bedrock、AWS Lambda、AWS Transfer Family が S3 API で読む構成の図](docs/images/s3ap-client-access-overview.svg)
 
 図 1: クライアントツール、S3 Access Points、ボリューム、バケット、後続の AWS サービスの関係。右下のサービスは文書上の想定で、実機は未確認です。
 
