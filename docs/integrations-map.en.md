@@ -23,7 +23,7 @@ The classes differ by the kind of public evidence, not by product merit. A targe
 | AWS Lambda | AWS service | N7, E3: Processing arriving files, reading shared data | Official expectation | AWS CLI (checking behavior) | U6, U5 |
 | Amazon CloudFront | AWS service | N6: HLS video delivery | Official expectation | None | U6 |
 | AWS Transfer Family | AWS service | N4: SFTP, FTPS, and FTP hand-off to outside parties. Prerequisites: ONTAP 9.17.1 or later, alias only, rename and append unsupported, and an access point with a VPC network origin is refused (U9; Snowflake has the same type of constraint, U13). The setup in this check cannot be used as is | Official expectation | None (the SFTP clients on the other side are within the Transfer Family documentation) | U6, U9 |
-| Amazon S3 general purpose bucket | AWS service | N5, E4a, E4b: Server-side copy (`CopyObject`, `UploadPartCopy`) | Official expectation. Bucket to volume was run in this check | AWS CLI, s5cmd, rclone (volume to bucket was not run here) | U8, Playbook, Record |
+| Amazon S3 general purpose bucket | AWS service | N5, E4a, E4b: Server-side copy (`CopyObject`, `UploadPartCopy`) | Official expectation. Bucket to volume and volume to bucket were run in this check | AWS CLI, s5cmd, rclone (volume to bucket was not run here) | U8, Playbook, Record |
 | S3 Batch Operations | AWS service | E4a, E4b: Jobs for bulk copy | Official expectation, plus a [Playbook record](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-points-server-side-copy-use-cases.md) (Japanese) | None (not run in this check) | Playbook |
 | Dremio Cloud | External product | E8a: Reads, and writes results back | Official expectation (Dremio's own blog, with nearly the same content as the NetApp blog) | None | U11, U12 |
 | Snowflake | External product | E8b: An external table. Checked 2026-05; reads worked. Conditions in [note E8-b of Use cases](use-cases.en.md) | Public case (the author's article, one environment) | None | U13 |
@@ -35,9 +35,9 @@ The classes differ by the kind of public evidence, not by product merit. A targe
 
 | Tool | Integrations and use cases | Related operations run (not a test of the use case) | Pattern |
 |---|---|---|---|
-| AWS CLI | Loading and checking data (N1, N2, N7, E1, E3), server-side copy (N5, E4a; E4b not confirmed), scheduled jobs (E5) | List, get, put, multipart, delete, server-side copy | [patterns/ingest/aws-cli](../patterns/ingest/aws-cli/README.en.md) |
-| s5cmd | Bulk transfer (E6), server-side copy (N5, E4a; E4b not confirmed), scheduled jobs (E5) | List, get, put, delete, server-side copy (performance not measured) | [patterns/ingest/s5cmd](../patterns/ingest/s5cmd/README.en.md) |
-| rclone | Sync with other storage (E7), server-side copy (N5, E4a; E4b not confirmed) | List, get, put, delete, server-side copy. The copy needed `--s3-storage-class FSX_ONTAP` | [patterns/ingest/rclone](../patterns/ingest/rclone/README.en.md) |
+| AWS CLI | Loading and checking data (N1, N2, N7, E1, E3), server-side copy (N5, E4a, E4b), scheduled jobs (E5) | List, get, put, multipart, delete, server-side copy | [patterns/ingest/aws-cli](../patterns/ingest/aws-cli/README.en.md) |
+| s5cmd | Bulk transfer (E6), server-side copy (N5, E4a, E4b), scheduled jobs (E5) | List, get, put, delete, server-side copy (performance not measured) | [patterns/ingest/s5cmd](../patterns/ingest/s5cmd/README.en.md) |
+| rclone | Sync with other storage (E7), server-side copy (N5, E4a, E4b) | List, get, put, delete, server-side copy. The copy needed `--s3-storage-class FSX_ONTAP` | [patterns/ingest/rclone](../patterns/ingest/rclone/README.en.md) |
 | Mountpoint for Amazon S3 | File paths for apps that cannot use the S3 API (N8) | Mount by alias and by ARN, new writes, reads, overwrite and delete with `--allow-overwrite --allow-delete` | [patterns/streaming/mountpoint-for-amazon-s3](../patterns/streaming/mountpoint-for-amazon-s3/README.en.md) |
 | MCP clients (Kiro, Claude Desktop) | List, read, and search from an AI client (a setup close to N3) | None (estimate) | [patterns/mcp](../patterns/mcp/kiro/README.en.md) |
 | Commercial transfer and streaming products | E9 | None (the user fills in a manual checklist) | [checklists/vendor](../checklists/vendor/file-mover-express/CHECKLIST.en.md) |
@@ -53,10 +53,3 @@ For each integration target, the entry falls into one of three kinds.
 | Present it as a file path with a client tool | An app that cannot use the S3 API reads and writes | Follow the tool's write constraints (Mountpoint does not allow overwrite, append, or delete by default) |
 
 Specifications and limits are first-hand information in the Playbook [constraints note (Japanese)](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md). They are not copied here.
-
-## What is not confirmed
-
-- That the targets in the table can actually read an FSx for ONTAP access point.
-- The per-target configuration requirements. A setting such as the Snowflake `AWS_ACCESS_POINT_ARN` is a record from the author's one environment.
-- Support for services not in the table. Where the Playbook [constraints note](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-point-constraints.md) or [server-side copy note](https://github.com/Yoshiki0705/FSx-for-ONTAP-Adoption-Playbook/blob/a4c8367f9172ee88f0af25731752af63dc2c6225/docs/ja/domains/data-utilization/notes/s3-access-points-server-side-copy-use-cases.md) (both Japanese) covers one, read that.
-- Performance and cost per target.

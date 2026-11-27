@@ -4,7 +4,7 @@
 
 Amazon FSx for NetApp ONTAP（以下 FSx for ONTAP）の S3 Access Points を、利用者の端末やサーバのクライアントツールから使うときの手順、確認結果、選び方を集めたリポジトリです。
 
-> **現在の状態**: 1 構成・各操作 1 回の実機確認です。4 つのツール（AWS CLI、s5cmd、rclone、Mountpoint for Amazon S3）を 2026-11-24 に確かめました（[記録](benchmarks/records/2026-11-24-client-tools-stage3.md)）。性能の数値はありません。商用ツールと rclone mount は未確認（`candidate`）のままです。
+> **現在の状態**: 1 構成・各操作 1 回の実機確認です。4 つのツール（AWS CLI、s5cmd、rclone、Mountpoint for Amazon S3）を 2026-11-24 に確かめ、2026-11-27 にサーバー側コピーの逆向きと大きなオブジェクト、NFS との併用、アクセスポイントの作り分けを確かめました（[記録](benchmarks/records/2026-11-24-client-tools-stage3.md)、[追加確認の記録](benchmarks/records/2026-11-27-client-tools-additional.md)）。性能の数値はありません。商用ツールと rclone mount は未確認（`candidate`）のままです。
 
 ![Amazon EC2 上の 4 つのクライアントツールが、S3 Access Points を通して Amazon FSx for NetApp ONTAP のボリュームを S3 API で使い、Amazon S3 の汎用バケットとサーバー側コピーでつながり（バケットとボリュームの両方向で測った）、Amazon Athena、Amazon Bedrock、AWS Lambda、AWS Transfer Family が S3 API で読む構成の図](docs/images/s3ap-client-access-overview.svg)
 

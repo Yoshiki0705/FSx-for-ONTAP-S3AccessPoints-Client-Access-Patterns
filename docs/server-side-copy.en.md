@@ -38,8 +38,3 @@ As a control that should succeed, first copy the same object directly with `aws 
 ```bash
 benchmarks/scripts/stage3-measure.sh --dry-run --case server-side-copy
 ```
-
-## What is not confirmed
-
-- Whether each tool issues `CopyObject` or `UploadPartCopy`, and at what size.
-- Whether the Playbook's per-API measurements can be read as results for client tools. Per-tool results are measured in stage 3 of this repository.

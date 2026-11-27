@@ -4,7 +4,7 @@
 
 This repository collects setup steps, confirmation results, and selection guidance for using Amazon FSx for NetApp ONTAP (FSx for ONTAP) S3 Access Points from client tools on your own machines and servers.
 
-> **Current state**: This is one configuration and one run per operation on real hardware. Four tools (AWS CLI, s5cmd, rclone, Mountpoint for Amazon S3) were checked on 2026-11-24 ([record](benchmarks/records/2026-11-24-client-tools-stage3.en.md)). There are no performance numbers. Commercial tools and rclone mount remain `candidate` (unconfirmed).
+> **Current state**: This is one configuration and one run per operation on real hardware. Four tools (AWS CLI, s5cmd, rclone, Mountpoint for Amazon S3) were checked on 2026-11-24, and on 2026-11-27 the reverse direction of server-side copy, large objects, use alongside NFS, and splitting access points were checked ([record](benchmarks/records/2026-11-24-client-tools-stage3.en.md), [additional checks record](benchmarks/records/2026-11-27-client-tools-additional.en.md)). There are no performance numbers. Commercial tools and rclone mount remain `candidate` (unconfirmed).
 
 ![Four client tools on Amazon EC2 use an Amazon FSx for NetApp ONTAP volume over the S3 API through S3 Access Points, connect to an Amazon S3 general purpose bucket by server-side copy (measured in both directions, bucket and volume), and Amazon Athena, Amazon Bedrock, AWS Lambda, and AWS Transfer Family read over the S3 API](docs/images/s3ap-client-access-overview-en.svg)
 
